@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!--<meta charset="utf-8" />-->
+<meta charset="shift_jis" />
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1" />
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+<title>スマ株 | JTG証券</title>
+<meta property="og:title" content="株取引ツールならスマ株 JTG証券" />
+<meta property="og:image" content="https://www.jtg-sec.co.jp/images_home/hs_logo_w165.gif" />
+<meta property="og:url" content="https://www.jtg-sec.co.jp/lp/sumakabu/" />
+<meta property="og:description" content="スマ株とは、自宅や外出先など、カンタン操作で株取引ができるJTG証券オリジナルアプリです。パソコン、スマートフォン、タブレットに対応。それぞれの特性を活かし、操作性や発注機能をいちばんに考えた株式専用取引ツールです。" />
+<meta name="keywords" content="株,取引,取引ツール,スマ株,投資,スマホ,PC,パソコン,タブレット,アプリ,操作性,発注,株式">
+<meta name="description" content="スマ株とは、自宅や外出先など、カンタン操作で株取引ができるJTG証券オリジナルアプリです。パソコン、スマートフォン、タブレットに対応。それぞれの特性を活かし、操作性や発注機能をいちばんに考えた株式専用取引ツールです。">
+<link rel="stylesheet" type="text/css" href="css/reset.css" />
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="stylesheet" type="text/css" href="css/tablet.css">
+<link rel="stylesheet" type="text/css" href="css/smart.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/scrolltopcontrol.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../js/jip.js"></script>
+<!--<link rel="stylesheet" type="text/css" href="css/media-queries.css" />
+<link rel="stylesheet" type="text/css" href="css/tablet.css" media="screen and (min-width: 641px) and (max-width: 740px)">
+<link rel="stylesheet" type="text/css" href="css/smart.css"  media="only screen and (max-width: 640px)">-->
+
+
+<!--<script type="text/javascript" src="js/jquery-1.7.min.js"></script>-->
+<script type="text/javascript" src="js/flipsnap.js"></script>
+<!--script type="text/javascript">
+    $(function(){
+        var touchFlg = false;//---最初はタッチされていない
+        var maxPage = 2-1;		//　●-1　画像枚数-1	①自動スライドバナー変更
+        var myImage = $("#showcase>ul>li>img");
+        var myPointer = $("#interface .pointer span");
+        var flipsnap = Flipsnap("#showcase ul");
+        resizeFunc();
+
+        flipsnap.element.addEventListener('fspointmove', function() {
+            myPointer.filter('.current').removeClass('current');
+            myPointer.eq(flipsnap.currentPoint).addClass('current');
+        }, false);
+
+        $("#interface .pointer .next").click(function() {
+            flipsnap.toNext();
+        });
+        $("#interface .pointer .prev").click(function() {
+            flipsnap.toPrev();
+        });
+
+        $("#interface .pointer span").click(function() {
+            var clickID = Number(this.id);
+            flipsnap.moveToPoint(clickID);
+        });
+
+        $(window).resize(resizeFunc);
+        function resizeFunc() {
+            var myWidth = $(document).width();
+            myImage.css("width", myWidth);
+            myImage.css("height", myWidth*0.5625);
+            flipsnap.refresh();
+        }
+
+        //---５秒でページを切り替える
+        function changeFunc() {
+            if ( touchFlg ) return;//----タッチ中であれば処理しない
+            maxPage < flipsnap.currentPoint+1 ? flipsnap.moveToPoint(0) : flipsnap.toNext();
+        }
+        setInterval(changeFunc,6000);
+
+        //---タッチの管理
+        $("#showcase").on("touchstart mousedown" ,function(){touchFlg = true});
+        $("#showcase").on("touchend touchcancel mouseup" ,function(){touchFlg = false});
+
+    });
+</script-->
+<!-- フリックでバナーをスライドさせる処理　 /-->
+
+	<!--[if IE]>
+		<script src="../../js/html5shiv.js"></script>
+	<![endif]-->
+
+
+<style>/* フリックでスライドするメニュー */
+#showcase {
+	width: 100%;
+	position:relative;
+	/*overflow:auto;*/
+	overflow:hidden;
+}
+#showcase ul {
+	display:block;
+	width:200%; /* 画像の枚数 x 100% 	②自動スライドバナー変更*/
+	margin:0px;
+	padding:0px;
+}
+#showcase ul li {
+	float: left;
+	width:50%; /* 100% ÷ 画像の枚数 = ●●% 　例）画像枚数　5枚=20%　4枚=25%　3枚=33.33%　2枚=50%　　③自動スライドバナー変更　*/
+	list-style:none;
+}
+#showcase img{
+	/*width: 320px;
+	height:180px;*/
+	width: 100%;
+}
+/*----- インジケーターの設定 -----*/
+#interface .pointer {
+	text-align: center;
+	padding:10px;
+}
+#interface .pointer span {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	margin:7px;
+	border-radius: 8px;
+	border: 1px solid #000;
+}
+#interface .pointer span.current {
+  background: #FC0;
+}
+/*----- next / prev ボタン -----*/
+#interface .prev {
+	/*padding:5px;
+	border: 1px solid #000;
+	border-radius: 3px;*/
+	float:left;
+	background:url(images/prev.png) no-repeat;
+	width:26px;
+	height:26px;
+}
+#interface .next {
+	/*padding:5px;
+	border: 1px solid #000;
+	border-radius: 3px;*/
+	float:right;
+	background:url(images/next.png) no-repeat;
+	width:26px;
+	height:26px;
+}
+.area_sp{display:none;}
+.area_pc{display:block;}
+
+@media only screen and (max-device-width: 480px) {
+.area_sp{display:block;}
+.area_pc{display:none;}
+}
+
+
+/* フリックでスライドするメニュー 2013.12.13追加　END*/
+</style>
+
+<script type="text/javascript">
+<!--
+	//php変数をjs変数にセット
+	hsurl_js = 'https://www.jtg-sec.co.jp';
+// -->
+</script>
+</head>
+
+<body id="home">
+
+	<div id="wrapper">
+		<header>
+        	<div class="header1">
+                <h1 class="logo"><a href="../../index.htm"><img src="https://www.jtg-sec.co.jp/images_home/hs_logo_w165_jtg.gif" alt="JTG証券"></a></h1>
+                <!--<h1 class="text1">豪華賞品が当たるチャンス！<br>
+                スマ株キャンペーン実施中！</h1>-->
+
+              	<!--<nav class="head">
+                  <ul>
+                  <li><a href="https://bb.jtg-sec.co.jp/confirm/kouza_kaisetsu.htm" target="_blank">口座開設</a></li>
+                  <li><a href="https://bb.jtg-sec.co.jp/loginform/" target="_blank">ログイン</a></li>
+                  </ul>
+                </nav>-->
+
+<!--
+                <div class="area_pc" align="center" style="float:right; padding:10px"><a class="btn_yel" href="https://bb.jtg-sec.co.jp/confirm/kouza_kaisetsu.htm" target="_blank">ログイン</a></div>
+-->
+
+                <div class="area_pc" align="center" style="float:right; padding:10px"><a class="btn_yel" href="javascript:;" onClick="tradelogin()">ログイン</a></div>
+
+                <div class="area_pc" align="center" style="float:right; padding:10px"><a class="btn_red" href="https://bb.jtg-sec.co.jp/confirm/kouza_kaisetsu.htm" target="_blank">ウェブ口座開設はこちら</a></div>
+                <div class="area_sp" align="center" style="float:right; padding:5px"><a class="btn_red" href="https://reg18.smp.ne.jp/regist/is?SMPFORM=nir-njmdt-dcc34754e44b0a7fa5dc9808ff8f379f" target="_blank">口座開設</a></div>
+
+            </div>
+
+            <!--いいね！ボタン-->
+            <div class="area_pc" align="right"><iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.jtg-sec.co.jp&width&layout=standard&action=like&show_faces=true&share=true&height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:66%; height:32px; margin:3px; padding:3px;" allowTransparency="true"></iframe></div>
+            <div class="area_sp" align="right"><iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.jtg-sec.co.jp%2F&amp;width=150&amp;layout=button_count&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:150px; height:21px;margin:3px; padding:3px;" allowTransparency="true"></iframe></div>
+
+
+			<!--PC表示-->
+			<div class="area_pc"><img src="images/main.jpg" alt="スマ株" border="0" usemap="#Map" />
+              <map name="Map">
+                <area shape="rect" coords="800,158,954,212" href="https://www.jtg-sec.co.jp/jump.htm/https://itunes.apple.com/jp/app/suma-zhu/id464731246?mt=8" target="_blank">
+                <area shape="rect" coords="803,223,956,281" href="https://www.jtg-sec.co.jp/jump.htm/https://play.google.com/store/apps/details?id=jp.co.hs_sec.app&hl=ja" target="_blank">
+              </map>
+			</div>
+
+
+            <!--SP表示-->
+			<div class="area_sp"><img src="images/main_sp.jpg" alt="スマ株" border="0"/>
+<div align="center"><a href="https://www.jtg-sec.co.jp/jump.htm/https://itunes.apple.com/jp/app/suma-zhu/id464731246?mt=8" target="_blank"><img src="images/icon_appstore.png" width="40%"></a><a href="https://www.jtg-sec.co.jp/jump.htm/https://play.google.com/store/apps/details?id=jp.co.hs_sec.app&hl=ja" target="_blank"><img src="images/icon_googleplay.png" width="40%"></a></div>
+			</div>
+
+
+<!--######  フリックスライドバナーエリア　###### -->
+<!--<div class="area_sp">
+		<section id="showcase">
+			<ul>
+            	<li><a href="sumakabu.html"><img src="images/main.jpg" alt="スマ株" /></a></li>
+				<li><a href="../../camp/net/201501/index.htm" target="_blank"><img src="images/1.jpg"></a></li>
+			</ul>
+		</section>
+		<section id="interface">
+			<div class="pointer">
+                <div class="prev"> </div>
+				<span id="0" class="current"></span>
+				<span id="1"></span>
+                <div class="next"> </div>
+			</div>
+		</section>
+</div>-->
+<!--######  フリックスライドバナーエリア　###### /-->
+
+            <div class="clearfix"></div>
+            <nav>
+                <ul id="menubar">
+                <li id="current"><a href="index.html">ホーム<span>HOME</span></a></li>
+                <li><a href="sumakabu.html">スマ株の特徴<span>point</span></a></li>
+                <li><a href="manual.html">マニュアル<span>manual</span></a></li>
+                <li><a href="contact.html">お問い合わせ<span>contact</span></a></li>
+                </ul>
+            </nav>
+
+		</header>
+
+		<section id="main-content">
+
+		  <div id="featured">
+			<h1>スマ株</h1>
+				<p>スマートフォンを使って、外出先でもカンタンにお取引ができるJTG証券オリジナルアプリです。どなたでも安心してご利用いただけるよう、操作性や発注機能などをいちばんに考えた専用取引ツールです。<!--2016年10月より新たに「スマ株」を全面リニューアルすることとなりました。 --></p>
+<!--
+				<p class="infoDate"><b>「スマ株」では、NISA口座のお預り表示及び注文の発注を行う事ができません。ご注文等につきましては、パソコン用取引画面をご利用くださいます様お願い申し上げます。</b></p>
+-->
+<!--<p class="infoDate">※今回のリニューアルにともない、「スマ株 for PC」「スマ株 for Tablet」のサービスを終了させていただくこととなりました。ご利用いただいているお客様にはご迷惑をおかけすることとなりますが、ご理解を賜りますようお願い申し上げます。 詳しくは下記「お知らせ」をご確認ください。</p> -->
+		  </div> <!-- END Featured -->
+
+			<hr/>
+
+          <div id="latest">
+
+            <aside class="side" id="side">
+
+                    <div class="side_title">ホーム</div>
+                    <!--矢印つきリスト-->
+                    <section class="list1">
+                          <ul>
+                          <li><a href="#1">スマ株とは？</a></li>
+                          <li><a href="#2">新着情報</a></li>
+                          <li><a href="#3">お知らせ</a></li>
+                          <li><a href="#4">バージョンアップ情報</a></li>
+                          <!--<li><a href="#4">キャンペーン</a></li>-->
+                          <!--<li><a href="#5">TOPIX</a></li>
+                          <li><a href="#6">特徴</a></li>-->
+                          </ul>
+
+                          <!--<div class="sp_dispnone" align="center" style="margin:10px 0;"><a class="btn_gre" href="https://www.jtg-sec.co.jp/pc_demo/loginView.html" target="_blank" onClick="link_demo();">スマ株forPC<br>デモ画面をいますぐ体験</a></div>-->
+
+						  <!--<div align="center">-->
+                              <!--PC表示
+                              <div class="area_pc"><a href="https://www.jtg-sec.co.jp/pc_demo/loginView.html" target="_blank"><img src="images/demo_pc.gif" alt="スマ株 for PC　デモ画面をいますぐ体験" class="ro"/></a></div>-->
+                              <!--スマホ表示
+                              <div class="area_sp"><a href="https://www.jtg-sec.co.jp/sp_demo/index.html" target="_blank"><img src="images/demo_sp.gif" alt="スマ株　デモ画面をいますぐ体験" class="ro" /></a></div>-->
+                              <!--スマ株キャンペーンバナー-->
+                             <!-- <div><a href="../../camp/net/201504/index.htm" target="_blank"><img src="https://bb.jtg-sec.co.jp/loginform/banner89.jpg" alt="春の投信・外債キャンペーン" class="ro" /></a></div>-->
+                          <!--</div>-->
+
+                          <!--いいね！ボタン-->
+                          <br><iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.jtg-sec.co.jp%2F&amp;width=115&amp;layout=button_count&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:21px;" allowTransparency="true"></iframe>
+                    </section>
+
+			  </aside><!--/.side-->
+
+
+
+			  <section class="main">
+               	  <a name="1" id="1"></a>
+				  <h2>スマ株とは</h2>
+                <p>2011年10月。</p>
+                    <p>従来型の携帯電話に変わり、「通話もできる手のひらサイズのパソコン」として当時普及し始めたスマートフォンの特性を活かし、操作性や発注機能をいちばんに考えたJTG証券オリジナルのスマートフォン用アプリ「スマ株」をリリースしました。</p>
+                    <p><br>
+                    その後も、スマートフォンの機能向上と、お客様からの頂戴したご意見を参考に様々なバージョンアップを行っております。<!--い、2016年10月より新たに「スマ株」を全面リニューアルすることとなりました。 --></p>
+<p><br>
+
+				    <div align="center"><img src="images/capture.jpg" alt="スマ株 取引画面イメージ" /></div>
+
+                   	  <!--<div class="half_left line_l">
+                    		<h3 class="t2">口座をお持ちのお客様</h3>
+                    		<p>以下のログインボタンより操作性が向上した株式取引専用画面をご利用いただけます。</p>
+                            <div align="center"><a class="btn_yel" href="https://kmt.jtg-sec.co.jp/pc/index" target="_blank">スマ株 for PC</a></div>
+                     	</div>
+
+
+                        <div class="half_left line_l line_r">
+                            <h3 class="t2">口座をお持ちでないお客様</h3>
+    						<p>以下よりデモ画面へログインいただけますので、どうぞ実際に触ってお試しください。</p>
+							<div align="center"><a class="btn_gre" href="https://www.jtg-sec.co.jp/pc_demo/loginView.html" target="_blank">デモ画面をいますぐ体験</a></div>
+                        </div>-->
+
+
+                  <div class="clearfix"></div>
+
+				  <div class="margin20"></div>
+
+
+
+                  <a name="2" id="2"></a>
+				  <h2>新着情報</h2>
+
+                  <h4>システムメンテナンス情報</h4>
+
+
+<p><h3 style=font-size:1.1em; margin-top:10px;>■下記の日程で定期メンテナンス作業を予定しております。</h3>全ての取引ツールにログインできません｡<p><u>○ 2026年06月21日（日）6：05～18：00<br></u>
+				  <!--<section class="list2">
+                        <ul>
+                            <li>
+                                <span class="infoDate">2015年1月30日</span>
+                                <span class="infotext"><a href="#">てすとてすとてすと</a></span>
+                            </li>
+
+
+
+                            <a href="#20150921">
+                          	<li>
+                            	<span class="infoDate">2015年9月16日</span><br>
+                           		<span class="infotext">バージョンアップのお知らせ。</span><br />
+                          	</li>
+                          </a>
+
+                            <a href="#20150916">
+                          	<li>
+                            	<span class="infoDate">2015年9月16日</span><br>
+                           		<span class="infotext">株式取引アプリ「スマ株」iPhone 6s・iPhone 6s Plus（iOS 9）の対応について</span><br />
+                          	</li>
+                          </a>
+                            <a href="#20150621">
+                          	<li>
+                            	<span class="infoDate">2015年6月21日</span><br>
+                           		<span class="infotext">バージョンアップのお知らせ。</span><br />
+                          	</li>
+                          </a>
+
+                            <a href="#20150609">
+                          	<li>
+                            	<span class="infoDate">2015年6月9日</span><br>
+                           	  <span class="infotext">海外指標「ブラジルボベスパ指数」の配信終了について</span><br />
+                          	</li>
+                          </a>
+
+                          <a href="#20150417">
+                          	<li>
+                            	<span class="infoDate">2015年4月17日</span><br>
+                            	<span class="infotext">バージョンアップのお知らせ。</span><br />
+                          	</li>
+                          </a>
+
+                          <a href="#20150320">
+                          	<li>
+                            	<span class="infoDate">2015年3月20日</span><br>
+                            	<span class="infotext">バージョンアップのお知らせ。</span><br />
+                          	</li>
+                          </a>
+
+                          <a href="#20150220">
+                          	<li>
+                            	<span class="infoDate">2015年2月20日</span><br>
+                            	<span class="infotext">バージョンアップのお知らせ。</span><br />
+                          	</li>
+                          </a>
+
+                            <li>
+                                <span class="infoDate">2015年 1月30日</span><br>
+                                <span class="infotext">「スマ株 for Tablet」（iPad版）をリリースしました。</span>
+                            </li>
+
+                          <a href="#20141221">
+                          	<li>
+                            	<span class="infoDate">2014年12月21日</span><br>
+                            	<span class="infotext">バージョンアップのお知らせ。</span>
+                          	</li>
+                          </a>
+
+                            <li>
+                                <span class="infoDate">2014年12月20日</span><br>
+                                <span class="infotext">「スマ株 for Tablet」（android版）をリリースしました。</span>
+                            </li>
+                            <li>
+                                <span class="infoDate">2014年11月29日</span><br>
+                                <span class="infotext">「スマ株 for PC」をリリースしました。</span>
+                            </li>
+                        </ul>
+					</section>-->
+
+
+
+				  <div class="margin20"></div>
+                  <a name="3" id="3"></a>
+                  <h2>お知らせ</h2>
+		<section class="list2">
+
+			<ul>
+
+			<li>
+				<p>現在、お知らせはありません。</p>
+			</li>
+
+
+<!--
+			<li>
+                            	<span class="infoDate">2016年9月30日</span><br>
+                           		<h4>スマートフォン向け取引アプリ「スマ株」リニューアルのお知らせ</h4><br />
+                                <p>モバイルツールとしてご利用いただいております、当社のスマートフォン取引アプリ「スマ株」が新しくなります。</p><br>
+								<p><u>リリース日程：2016年10月2日（日）18時</u></p><br>
+								<p>今回のリリースではデザインや操作を刷新し、先物/オプションの金融派生商品にも対応いたします。</p>
+                                <p class="infoDate">※先物/オプション取引のOCO注文、IFDONE注文のリリース日につきましては、ホームページにて改めてお知らせいたします。</p><br>
+                                <br />
+                          	</li>
+-->
+
+
+                          </ul>
+
+                          <div class="margin20"></div>
+		<a name="4" id="4"></a>
+		<h2>バージョンアップ情報</h2>
+		<p>
+		最新版の「スマ株」は、こちらからダウンロードしてください。<br />
+		<a href="https://www.jtg-sec.co.jp/jump.htm/https://itunes.apple.com/jp/app/suma-zhu/id464731246?mt=8" target="_blank"><img src="images/icon_appstore.png" width="20%" height="20%" /></a>　　
+		<a href="https://www.jtg-sec.co.jp/jump.htm/https://play.google.com/store/apps/details?id=jp.co.hs_sec.app&hl=ja" target="_blank"><img src="images/icon_googleplay.png" width="20%" height="20%" /></a>
+		</p>
+		<section class="list2">
+
+<!--
+			<ul>
+				<li>
+					<p>現在、バージョンアップ予定はありません。</p>
+				</li>
+			</ul>
+-->
+
+<!--      <a name="ver6_2_0" id="ver6_2_0"></a>
+			<ul>
+				<li>
+					<h4><span class="infoDate">ver：6.2.0</span>　8月18日（日）18時～</h4>
+					<h4>キーワード検索機能を追加</h4>
+						<P>
+							銘柄検索メニューに「キーワード検索」機能を追加しました。
+						</p>
+						<p class="infoDate">
+							※今回のバージョンアップにより、8月18日（日）18時以降、最新版（ver：6.2.0）へのアップデートが必要になります。リリース日以降、旧バージョン（ver：6.1.8以下）のスマ株はご利用いただけませんので、ご注意ください。<br />
+							※スマ株の自動ログインを設定されている場合、スマ株を起動後、画面が固まったような状態になる場合がります。その場合は、「App Store」または「Google Play」のサイトから、最新版にバージョンアップしていただきますようお願い申し上げます。<br />
+						</p>
+						<p>
+							＜画面イメージ＞<br />
+							<img src="images/search_keyword.png" width="350px" height="300px"  /><br />
+							銘柄検索画面で「キーワード検索」のボタンを選択。銘柄に関連商品する商品名などを入力して検索すると、キーワードに関連する銘柄が表示されます。
+						</p>
+				</li>
+			</ul>
+-->
+
+<!--
+
+      <a name="ver6_1_4" id="ver6_1_4"></a>
+			<ul>
+				<li>
+					<h4><span class="infoDate">ver：6.1.4</span>　9月28日（木）</h4>
+					<h4>保有銘柄の評価損益表示の改善</h4>
+						<P>
+							保有銘柄の評価損益がリアルタイムに更新されない不具合に対応しました。
+						</p>
+				</li>
+			</ul>
+
+
+      <a name="ver6_1_3" id="ver6_1_3"></a>
+			<ul>
+				<li>
+					<h4><span class="infoDate">ver：6.1.3</span>　8月9日（水）</h4>
+					<h4>自動ログインの関する不具合の対応</h4>
+						<P>
+							一部の端末で発生する自動ログインに関する不具合に対応しました。
+						</p>
+				</li>
+			</ul>
+
+
+      <a name="ver6_1_2" id="ver6_1_2"></a>
+			<ul>
+				<li>
+					<h4><span class="infoDate">ver：6.1.2</span>　7月27日（木）</h4>
+					<h4>特定の操作でお気に入り銘柄が消えてしまう不具合の解消</h4>
+						<P>
+							特定の操作をすることで、お気に入りフォルダに登録している銘柄が消えてしまう不具合に対応しました。
+						</p>
+				</li>
+			</ul>
+
+      <a name="ver6_1_1" id="ver6_1_1"></a>
+			<ul>
+				<li>
+					<h4><span class="infoDate">ver：6.1.1</span>　5月21日（日）</h4>
+					<h4>【信用取引の評価損益表示方法変更】</h4>
+						<P>
+							変更前：諸経費を含まない金額での評価損益<br />
+							変更後：諸経費を含んだ金額での評価損益<br />
+							<span class="infoDate">＜ご注意＞</span><br />
+							諸経費を含んだ評価損益表示に変更となるため、バージョンアップの前後で、評価損益が変動する場合がありますので、ご注意ください。
+						</p>
+					<h4>配当落ち銘柄の前日比表示変更</h4>
+						<P>
+							変更前：配当落ち基準値からの比較で前日比を表示<br />
+							変更後：終値からの比較で前日比を表示（配当落ち表示の追加）
+						</p>
+
+					<h4>その他メニューにPC版取引画面へのリンクボタン追加</h4>
+						<P>
+							スマ株からダイレクトに、PC版取引画面にリンクします。マイページ、外国債券の申込などは、こちらのリンクボタンをご利用ください。
+						</p>
+
+					<h4>その他</h4>
+						<P>
+							・NISA口座での注文の際、注文確認画面から入力画面に戻ったとき、NISAボタンがOFFになってしまう不具合の修正<br />
+							・信用・先物取引　本日の注文画面に新規・返済の別を表示追加
+						</p>
+				</li>
+			</ul>
+
+
+      <a name="ver6_1_0" id="ver6_1_0"></a>
+			<ul>
+				<li>
+					<h4><span class="infoDate">ver：6.1.0</span>　2月26日（日）</h4>
+					<h4>スマ株からのNISA口座の注文が発注できるようになります。</h4>
+						<P>NISA口座で保有している株式の残高表示や発注に対応しました。</p>
+					<h4>受渡金額の表示に対応しました。</h4>
+						<P>本日の注文から受渡金額が表示できるよう改善しました。</p>
+					<a href="../../news/pdf/20170222.pdf" target="_blank"><span class="blu" >バージョンアップの詳細（クリックしてください）</span></a>
+					<br />
+					<p class="infoDate">
+					※今回のバージョンアップにより2月26日（日）18時以降、最新版（ver：6.1.0）へのアップデートが必要になります。リリース日以降、旧バージョン（ver：6.0.8以下）のスマ株はご利用いただけませんので、ご注意ください。<br />
+					</p>
+				</li>
+			</ul>
+
+			<a name="ver6_0_8" id="ver6_0_8"></a>
+			<ul>
+				<li>
+					<h4><span class="infoDate">ver：6.0.8</span></h4>
+					<h4>信用取引の品受品渡注文に関して、ブラウザの起動方法を修正しました。</h4>
+				</li>
+			</ul>
+
+			<a name="ver6_0_7" id="ver6_0_7"></a>
+			<ul>
+				<li>
+					<h4><span class="infoDate">ver：6.0.7</span></h4>
+					<h4>オプションビューの表示不具合を修正しました。</h4>
+				</li>
+			</ul>
+
+			<a name="ver6_0_6" id="ver6_0_6"></a>
+			<ul>
+				<li>
+					<h4><span class="infoDate">ver：6.0.6</span></h4>
+					<h4>空売り価格規制に該当する銘柄の価格情報欄に「空」マークを追加しました。</h4>
+					<p>※「空売り価格規制」について、詳細はホームページにてご確認ください。<a href="../../bluesky_net/shinyou/rule_shinyou_09.htm"><span class="blu" >信用取引ルール-空売り規制</span></a></p>
+				</li>
+			</ul>
+
+
+			<a name="ver6_0_5" id="ver6_0_5"></a>
+			<ul>
+				<li>
+					<h4><span class="infoDate">ver：6.0.5</span></h4>
+					<h4>内部者取引の注文に関する不具合を修正を行いました。</h4>
+				</li>
+			</ul>
+			<div class="margin20"></div>
+
+			<a name="ver6_0_4" id="ver6_0_4"></a>
+			<h4><span class="infoDate">ver：6.0.4</span></h4>
+			※ver：6.0.3以下のバージョンは、<u>12月23日(金)9時以降、ご利用できなくなります。</u><br />それまでに、最新版へのバージョンアップをお願いいたします。<br />
+			<ul>
+				<li>
+					<h4>信用・先物オプション　返済注文画面の見直し</h4>
+					<p>個別の建玉を指定して返済する際、明細ごとに返済数量を変更できるよう改善しました。<br />
+						＜画面イメージ＞<br />
+						<img src="images/shitei_hensai.png" /><br />
+					</p>
+				</li>
+				<li>
+					<h4>注文訂正画面の見直し</h4>
+					<p>使用頻度の高い「価格訂正」がスムーズに行えるよう、初期表示で価格訂正の項目を表示する見直を行いました。<br />
+						<br />
+						<img src="images/teisei_2.png" /><br />
+						※「価格」と「株数」は同時訂正できません。それぞれで訂正を行ってください。
+					</p>
+				</li>
+				<li>
+					<h4>その他</h4>
+					<li>「お気に入り」「銘柄検索」から個別銘柄画面に遷移す際、初期表示を銘柄詳細に変更しました。</li>
+					<li>銘柄検索画面で、検索結果が1銘柄のみの場合、自動的に銘柄詳細画面が表示されるよう導線の見直しを行いました。</li>
+					<li>入金依頼（ネットバンク入金）で、ポップアップ画面が表示されない不具合を対応しました。</li>
+					<li>その他、軽微な修正を行いました。</li>
+				</li>
+			</ul>
+
+
+-->
+
+
+
+		</section>
+
+                      </section>
+                  <div class="margin20"></div>
+
+               	  <div class="margin20"></div>
+
+                 <!--
+                    <a name="4" id="4"></a>
+				  	<h2>キャンペーン</h2>
+                    <h3>春の投信・外債キャンペーン</h3>
+                  <p>期間中にインターネット取引口座を開設いただいたお客様に外債・投信の買付金額に応じて現金（最大45,000円）をプレゼントいたします。
+                  </p>
+
+					<a href="../../camp/net/201504/index.htm"><img src="../../camp/net/images/201504/main.jpg" alt="スマ株キャンペーン"/ class="ro"></a>
+
+
+				  <div class="margin20"></div>-->
+
+                  <!--<a name="5" id="5"></a>
+					<h2>TOPIX</h2>
+
+                    <section class="list3">
+                          <ul>
+                          <li><a href="#"><img src="https://www.jtg-sec.co.jp.dcn.ne.jp/images_home/top_right_01_suma.jpg" alt="サービス案内のイメージ"><strong>主要指標・指数の充実</strong>現在値・前日比に加えて新たに始値・高値・安値・終値を追加します。また、NASDAQなどの海外指数では更新間隔が増えます。</a></li>
+                          <li><a href="#"><img src="https://www.jtg-sec.co.jp.dcn.ne.jp/images_home/top_right_01_suma.jpg" alt="サービス案内のイメージ"><strong>スマ株と登録銘柄が同期</strong>スマ株PC版にてお気に入りで登録した銘柄を外出先でかんたんに確認することができます。</a></li>
+                          <li><a href="#"><img src="https://www.jtg-sec.co.jp.dcn.ne.jp/images_home/top_right_01_suma.jpg" alt="サービス案内のイメージ"><strong>株発注機能に特化した画面デザイン</strong>必要最低限に機能を絞り込んでいるため、ストレスのない直観的な操作ができます。</a></li>
+                          </ul>
+                    </section>-->
+
+				  <div class="clearfix"></div>
+
+
+                  <!--いいね！ボタン-->
+				  <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.jtg-sec.co.jp&width&layout=standard&action=like&show_faces=true&share=true&height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:98%; height:40px; margin:2px; padding:2px;" allowTransparency="true"></iframe>
+
+
+			  </section><!--/.main-->
+
+			</div><!-- END Latest -->
+
+			<div class="clearfix"></div>
+
+
+			<div id="about">
+            	<!--<a name="6" id="6"></a>
+				<h2>スマ株forPCの特徴</h2>
+                <div align="center"><img src="../images/sumakabu_pc/image01.jpg" alt=""></div>
+
+
+                <div id="account" align="center" style="margin:20px 0;">
+                    <a href="https://bb.jtg-sec.co.jp/confirm/kouza_kaisetsu.htm?ref=suma_res" target="_blank">
+                        <img src="https://www.jtg-sec.co.jp/images/bt_kaisetu_mini.gif" alt="口座開設" class="ro">
+                    </a>
+                </div>-->
+                <!--口座開設-->
+
+			</div><!--/#about-->
+		</section><!--/#main-content-->
+
+		<hr/>
+
+		<footer>
+
+
+
+
+<div style="clear:both;"></div>
+
+
+	
+	<div style="background-color: #EAF9FF; padding:25px 0px;text-align: center;" >
+	<!--<div style="margin-bottom: 10px;"><a href="https://www.jtg-sec.co.jp/start_guide/index.htm" style="text-decoration: underline; color: #001E97;">JTG証券の特長</a>－海外投資のJTG、ベンチャーを応援するJTG－</div>-->
+	Ｊトラストグローバル証券株式会社 金融商品取引業者 関東財務局長(金商)第35号<br>
+	貸金業者登録番号 東京都知事(1)第31946号<br>
+	加入協会:日本証券業協会､一般社団法人金融先物取引業協会､一般社団法人資産運用業協会､日本貸金業協会会員 第006278号
+	</div>
+	
+
+<style>
+    .footer-copyright{background-color:#333; color:#fff; width:100%; padding:5px 0px; font-size:90%;text-align: center;}
+</style>
+	<div class="footer-copyright">
+		COPYRIGHT  	&copy; J TRUST GLOBAL SECURITIES CO., LTD. ALL RIGHTS RESERVED.
+	</div>
+
+
+<!--計測タグ-->
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-P5KHVG2');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P5KHVG2"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<script src="https://www.jtg-sec.co.jp/js/responsive.js?20260610025612" charset="utf-8"></script>
+<!--<script src="https://www.jtg-sec.co.jp/js/responsive.js" charset="utf-8"></script>-->
+
+
+<!--//計測タグ-->
+
+
+<script src="https://www.jtg-sec.co.jp/js/responsive.js?20260610025612" charset="utf-8"></script>
+<!--<script src="https://www.jtg-sec.co.jp/js/responsive.js" charset="utf-8"></script>-->
+
+
+<!--スクロールヒント　tableの横スクロール時に表示させる-->
+<link rel="stylesheet" href="https://www.jtg-sec.co.jp/css/scroll-hint.css">
+<script src="https://www.jtg-sec.co.jp/js/scroll-hint.min.js"></script>
+<script>
+window.addEventListener('DOMContentLoaded', function(){
+  new ScrollHint('.js-scrollable');
+  new ScrollHint('.js-scrollable-hide',{remainingTime:1});
+});
+</script>	
+<!--//スクロールヒント-->
+
+<!--フッター固定相談＃債券カテゴリ-->
+<style>
+/*問い合わせフッター固定*/
+.in_fixed_bottom_bond {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #FED193;
+    box-sizing: border-box;
+    padding: 15px 2%;
+    z-index: 9;
+    
+}
+.in_fixed_bottom_bond[aria-expanded=false] {
+    bottom: -200px;
+    transition: .5s;
+}
+.in_fixed_bottom_bond[aria-expanded=true] {
+    bottom: 0;
+    transition: .5s;
+}
+    
+.soudan_menu_bond {
+  display: flex;
+  justify-content: center;
+}
+.soudan_item_bond {
+ width:80%;
+    max-width:900px;
+ font-size:clamp(17px, 2vw, 22px);
+  background-color: #FE9200;
+  padding: 10px;
+  margin-right: 20px;
+  border:#E68400 1px solid;
+    text-align: center;
+}
+.soudan_item_bond a {
+  color:#FFFFFF;
+    text-decoration: none;
+}
+    
+ 
+	
+   	
+
+    
+</style>
+
+                    
+      
+<!--/フッター固定相談＃債券カテゴリ-->
+
+<script src="https://www.jtg-sec.co.jp/js/jquery.cookie.js"></script>		</footer><!--/footer-->
+
+	</div> <!-- END Wrapper -->
+</body>
+</html>
