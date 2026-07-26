@@ -213,15 +213,18 @@ textarea { resize: vertical; }
   pointer-events: none;
 }
 .option-content {
+  display: block;
+  width: 100%;
   height: 100%;
+  min-height: 96px;
   padding: 16px;
   border-radius: 13px;
   border: 2px solid var(--line);
   background: var(--surface-soft);
   transition: .18s;
 }
-.option-content strong { display: block; margin-bottom: 5px; }
-.option-content small { color: var(--muted); line-height: 1.5; }
+.option-content strong { display: block; margin-bottom: 5px; line-height: 1.4; }
+.option-content small { display: block; color: var(--muted); line-height: 1.5; overflow-wrap: anywhere; }
 .option-card input:checked + .option-content {
   border-color: var(--primary);
   background: #eff6ff;
@@ -442,6 +445,47 @@ button, .option-card, .answer { -webkit-tap-highlight-color: transparent; }
   .topbar { padding-top: calc(22px + env(safe-area-inset-top)); }
 }
 
+
+.record-section {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.record-section:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.record-section h4 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--text);
+}
+.record-list {
+  margin: 6px 0 0;
+  padding-left: 20px;
+}
+.record-list li {
+  margin: 5px 0;
+  line-height: 1.55;
+}
+.record-score {
+  display: inline-flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.record-score span {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  font-size: 12px;
+}
+.record-empty {
+  color: var(--muted);
+}
+
   </style>
 </head>
 <body>
@@ -624,6 +668,7 @@ button, .option-card, .answer { -webkit-tap-highlight-color: transparent; }
           </label>
           <label>実施タイミング
             <select id="surveyTiming">
+              <option value="">選択してください</option>
               <option>納車後1か月</option>
               <option>納車後6か月</option>
               <option>車検前</option>
@@ -633,7 +678,7 @@ button, .option-card, .answer { -webkit-tap-highlight-color: transparent; }
             <input id="surveyCar" type="text" placeholder="例：ハイエース ディーゼル" />
           </label>
           <label>総合満足度（1〜5）
-            <input id="satisfaction" type="number" min="1" max="5" value="4" />
+            <input id="satisfaction" type="number" min="1" max="5" placeholder="1〜5" />
           </label>
         </div>
 
@@ -960,6 +1005,32 @@ function getSelectedLabels(name, source) {
   return selectedValues(name).map(id => source.find(x => x.id === id)?.title || id);
 }
 
+function getSelectedDetails(name, source) {
+  return selectedValues(name).map(id => {
+    const item = source.find(x => x.id === id);
+    return {
+      id,
+      title: item?.title || id,
+      desc: item?.desc || ""
+    };
+  });
+}
+
+function getDiscAnswers() {
+  return discQuestions.map((item, qi) => {
+    const checked = document.querySelector(`input[name="q${qi}"]:checked`);
+    if (!checked) {
+      return { question: item.q, type: "", answer: "未回答" };
+    }
+    const matched = item.answers.find(([type]) => type === checked.value);
+    return {
+      question: item.q,
+      type: checked.value,
+      answer: matched?.[1] || checked.value
+    };
+  });
+}
+
 function saveRecord(record) {
   const records = JSON.parse(localStorage.getItem("approachBookRecords") || "[]");
   records.unshift(record);
@@ -972,10 +1043,17 @@ function saveDeal() {
     alert("DISC診断を1問以上回答してください。");
     return;
   }
+
+  const profile = profiles[state.disc];
+  const barrierDetails = getSelectedDetails("barrier", barriers);
+  const motiveDetails = getSelectedDetails("motive", motives);
+
   const record = {
     id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
     kind: "商談",
     createdAt: new Date().toLocaleString("ja-JP"),
+
+    // 1. 顧客基本情報
     customerName: el("customerName").value.trim() || "氏名未入力",
     staffName: el("staffName").value.trim(),
     currentCar: el("currentCar").value.trim(),
@@ -983,14 +1061,28 @@ function saveDeal() {
     budget: el("budget").value.trim(),
     purchaseTiming: el("purchaseTiming").value,
     memo: el("dealMemo").value.trim(),
+
+    // 2. DISC簡易診断
     disc: state.disc,
-    scores: state.scores,
-    barriers: getSelectedLabels("barrier", barriers),
-    motives: getSelectedLabels("motive", motives),
-    killerWords: [...el("killerWords").querySelectorAll(".quote")].map(x => x.textContent)
+    scores: { ...state.scores },
+    discAnswers: getDiscAnswers(),
+
+    // 3・4. 購入障壁／プラス動機
+    barriers: barrierDetails.map(x => x.title),
+    barrierDetails,
+    motives: motiveDetails.map(x => x.title),
+    motiveDetails,
+
+    // 5. 推奨アプローチ
+    profileTitle: profile?.title || el("discTitle").textContent,
+    profileDescription: profile?.description || el("discDescription").textContent,
+    talkOrder: [...el("talkOrder").querySelectorAll("li")].map(x => x.textContent.trim()),
+    killerWords: [...el("killerWords").querySelectorAll(".quote")].map(x => x.textContent.trim()),
+    avoidAction: el("avoidAction").textContent.trim()
   };
+
   saveRecord(record);
-  alert("商談記録を保存しました。");
+  alert("商談設計の全項目を保存しました。");
 }
 
 function saveSurvey() {
@@ -1023,41 +1115,105 @@ function renderRecords() {
     el("recordsList").innerHTML = `<div class="empty">保存記録はまだありません。</div>`;
     return;
   }
+
+  const show = value => escapeHtml(value || "未入力");
+  const listHtml = items => {
+    if (!items || !items.length) return `<span class="record-empty">未入力・未選択</span>`;
+    return `<ul class="record-list">${items.map(x => `<li>${escapeHtml(x)}</li>`).join("")}</ul>`;
+  };
+
   el("recordsList").innerHTML = records.map(r => {
     if (r.kind === "商談") {
+      const scores = r.scores || {};
+      const discAnswers = r.discAnswers || [];
+      const barrierDetails = r.barrierDetails || (r.barriers || []).map(title => ({ title, desc: "" }));
+      const motiveDetails = r.motiveDetails || (r.motives || []).map(title => ({ title, desc: "" }));
+
+      const discAnswerLines = discAnswers.map(x =>
+        `${x.question || "質問"}：${x.answer || "未回答"}${x.type ? `（${x.type}）` : ""}`
+      );
+      const barrierLines = barrierDetails.map(x =>
+        `${x.title || "未入力"}${x.desc ? ` — ${x.desc}` : ""}`
+      );
+      const motiveLines = motiveDetails.map(x =>
+        `${x.title || "未入力"}${x.desc ? ` — ${x.desc}` : ""}`
+      );
+
       return `
         <article class="record-item">
           <div class="record-top">
             <div>
-              <h3>${escapeHtml(r.customerName)} — ${escapeHtml(r.targetCar || "検討車種未入力")}</h3>
-              <p class="record-meta">${escapeHtml(r.createdAt)} / 担当：${escapeHtml(r.staffName || "未入力")}</p>
+              <h3>${show(r.customerName)} — ${show(r.targetCar || "検討車種未入力")}</h3>
+              <p class="record-meta">${show(r.createdAt)} / 担当：${show(r.staffName)}</p>
             </div>
-            <span class="record-tag">商談・${escapeHtml(r.disc)}</span>
+            <span class="record-tag">商談・${show(r.disc)}</span>
           </div>
+
           <div class="record-body">
-            <strong>障壁：</strong>${escapeHtml((r.barriers || []).join("、") || "未選択")}<br>
-            <strong>動機：</strong>${escapeHtml((r.motives || []).join("、") || "未選択")}<br>
-            <strong>予算：</strong>${escapeHtml(r.budget || "未入力")}　
-            <strong>時期：</strong>${escapeHtml(r.purchaseTiming || "未入力")}<br>
-            <strong>メモ：</strong>${escapeHtml(r.memo || "なし")}
+            <div class="record-section">
+              <h4>1．顧客基本情報</h4>
+              <strong>顧客名：</strong>${show(r.customerName)}<br>
+              <strong>担当者：</strong>${show(r.staffName)}<br>
+              <strong>現在の車：</strong>${show(r.currentCar)}<br>
+              <strong>検討車種：</strong>${show(r.targetCar)}<br>
+              <strong>予算：</strong>${show(r.budget)}<br>
+              <strong>購入時期：</strong>${show(r.purchaseTiming)}<br>
+              <strong>商談メモ：</strong>${show(r.memo)}
+            </div>
+
+            <div class="record-section">
+              <h4>2．DISC簡易診断</h4>
+              <strong>判定：</strong>${show(r.disc)}
+              <div class="record-score">
+                <span>D ${escapeHtml(scores.D ?? 0)}</span>
+                <span>I ${escapeHtml(scores.I ?? 0)}</span>
+                <span>S ${escapeHtml(scores.S ?? 0)}</span>
+                <span>C ${escapeHtml(scores.C ?? 0)}</span>
+              </div>
+              ${discAnswers.length
+                ? listHtml(discAnswerLines)
+                : `<p class="record-empty">旧形式の記録のため、各設問の回答は保存されていません。</p>`}
+            </div>
+
+            <div class="record-section">
+              <h4>3．購入障壁</h4>
+              ${listHtml(barrierLines)}
+            </div>
+
+            <div class="record-section">
+              <h4>4．プラス動機</h4>
+              ${listHtml(motiveLines)}
+            </div>
+
+            <div class="record-section">
+              <h4>5．推奨アプローチ</h4>
+              <strong>顧客タイプ：</strong>${show(r.profileTitle || r.disc)}<br>
+              <strong>特徴：</strong>${show(r.profileDescription)}<br><br>
+              <strong>商談の順番</strong>
+              ${listHtml(r.talkOrder || [])}
+              <strong>キラーワード</strong>
+              ${listHtml(r.killerWords || [])}
+              <strong>避けたい対応：</strong>${show(r.avoidAction)}
+            </div>
           </div>
         </article>
       `;
     }
+
     return `
       <article class="record-item">
         <div class="record-top">
           <div>
-            <h3>${escapeHtml(r.customerName)} — ${escapeHtml(r.car || "購入車種未入力")}</h3>
-            <p class="record-meta">${escapeHtml(r.createdAt)} / ${escapeHtml(r.timing)}</p>
+            <h3>${show(r.customerName)} — ${show(r.car || "購入車種未入力")}</h3>
+            <p class="record-meta">${show(r.createdAt)} / ${show(r.timing)}</p>
           </div>
-          <span class="record-tag">満足度 ${escapeHtml(r.satisfaction)}/5</span>
+          <span class="record-tag">満足度 ${show(r.satisfaction)}/5</span>
         </div>
         <div class="record-body">
-          <strong>期待：</strong>${escapeHtml(r.expected || "未入力")}<br>
-          <strong>実感：</strong>${escapeHtml(r.realized || "未入力")}<br>
-          <strong>ズレ：</strong>${escapeHtml(r.gap || "なし")}<br>
-          <strong>体験談：</strong>${escapeHtml(r.testimonial || "未入力")}
+          <strong>期待：</strong>${show(r.expected)}<br>
+          <strong>実感：</strong>${show(r.realized)}<br>
+          <strong>ズレ：</strong>${show(r.gap || "なし")}<br>
+          <strong>体験談：</strong>${show(r.testimonial)}
         </div>
       </article>
     `;
@@ -1065,12 +1221,17 @@ function renderRecords() {
 }
 
 function resetInputs() {
-  if (!confirm("現在の入力内容をリセットしますか？ 保存済み記録は残ります。")) return;
-  document.querySelectorAll("#deal input, #deal textarea, #deal select").forEach(node => {
-    if (node.type === "radio" || node.type === "checkbox") node.checked = false;
-    else node.value = "";
+  if (!confirm("商談設計と購入後アンケートの入力内容をすべてリセットしますか？ 保存済み記録は残ります。")) return;
+
+  document.querySelectorAll("#deal input, #deal textarea, #deal select, #survey input, #survey textarea, #survey select").forEach(node => {
+    if (node.type === "radio" || node.type === "checkbox") {
+      node.checked = false;
+    } else {
+      node.value = "";
+    }
   });
-  state.scores = {D:0,I:0,S:0,C:0};
+
+  state.scores = { D:0, I:0, S:0, C:0 };
   state.disc = null;
   ["D","I","S","C"].forEach(t => el(`score${t}`).textContent = "0");
   generateRecommendation();
@@ -1082,17 +1243,61 @@ function exportCsv() {
     alert("出力する記録がありません。");
     return;
   }
-  const rows = [["種別","保存日時","顧客名","車種","DISC","障壁","動機","満足度","メモ・期待","実感","ズレ","体験談"]];
+
+  const rows = [[
+    "種別","保存日時","顧客名","担当者","現在の車","検討・購入車種","予算","購入時期",
+    "商談メモ","DISC判定","DISC点数","DISC各回答","購入障壁","プラス動機",
+    "顧客タイプ説明","商談の順番","キラーワード","避けたい対応",
+    "アンケート実施時期","満足度","購入前の期待","実際に良かったこと",
+    "想定とのズレ・不満","体験談"
+  ]];
+
   records.forEach(r => {
+    const scoreText = r.scores
+      ? `D:${r.scores.D ?? 0} I:${r.scores.I ?? 0} S:${r.scores.S ?? 0} C:${r.scores.C ?? 0}`
+      : "";
+    const answerText = (r.discAnswers || [])
+      .map(x => `${x.question}:${x.answer}${x.type ? `(${x.type})` : ""}`)
+      .join(" / ");
+    const barrierText = (r.barrierDetails || (r.barriers || []).map(title => ({title})))
+      .map(x => `${x.title || ""}${x.desc ? `：${x.desc}` : ""}`)
+      .join(" / ");
+    const motiveText = (r.motiveDetails || (r.motives || []).map(title => ({title})))
+      .map(x => `${x.title || ""}${x.desc ? `：${x.desc}` : ""}`)
+      .join(" / ");
+
     rows.push([
-      r.kind || "", r.createdAt || "", r.customerName || "",
-      r.targetCar || r.car || "", r.disc || "",
-      (r.barriers || []).join(" / "), (r.motives || []).join(" / "),
-      r.satisfaction || "", r.memo || r.expected || "",
-      r.realized || "", r.gap || "", r.testimonial || ""
+      r.kind || "",
+      r.createdAt || "",
+      r.customerName || "",
+      r.staffName || "",
+      r.currentCar || "",
+      r.targetCar || r.car || "",
+      r.budget || "",
+      r.purchaseTiming || "",
+      r.memo || "",
+      r.disc || "",
+      scoreText,
+      answerText,
+      barrierText,
+      motiveText,
+      [r.profileTitle, r.profileDescription].filter(Boolean).join("："),
+      (r.talkOrder || []).join(" / "),
+      (r.killerWords || []).join(" / "),
+      r.avoidAction || "",
+      r.timing || "",
+      r.satisfaction || "",
+      r.expected || "",
+      r.realized || "",
+      r.gap || "",
+      r.testimonial || ""
     ]);
   });
-  const csv = "\uFEFF" + rows.map(row => row.map(v => `"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n");
+
+  const csv = "\uFEFF" + rows
+    .map(row => row.map(v => `"${String(v).replace(/"/g,'""')}"`).join(","))
+    .join("\n");
+
   const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
