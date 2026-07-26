@@ -486,6 +486,85 @@ button, .option-card, .answer { -webkit-tap-highlight-color: transparent; }
   color: var(--muted);
 }
 
+
+.records-tools {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+  margin-top: 20px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface-soft);
+}
+.record-search {
+  min-width: 0;
+}
+.record-search input {
+  background: white;
+}
+.search-clear {
+  white-space: nowrap;
+}
+.record-count {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.record-heading-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+.record-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.record-action-btn {
+  min-height: 42px;
+}
+.btn-line {
+  color: white;
+  background: #06c755;
+}
+.btn-line:hover {
+  opacity: .9;
+}
+@media (max-width: 620px) {
+  .records-tools {
+    grid-template-columns: 1fr;
+  }
+  .record-count {
+    grid-column: 1;
+  }
+  .search-clear,
+  .record-actions .btn,
+  .record-heading-actions .btn {
+    width: 100%;
+  }
+  .record-top {
+    flex-direction: column;
+  }
+  .record-heading-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+@media print {
+  .records-tools,
+  .record-actions {
+    display: none !important;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -715,6 +794,22 @@ button, .option-card, .answer { -webkit-tap-highlight-color: transparent; }
             <button class="btn btn-danger" id="clearRecordsBtn">全記録を削除</button>
           </div>
         </div>
+
+        <div class="records-tools">
+          <label class="record-search">
+            <span>顧客名で検索</span>
+            <input
+              id="recordSearch"
+              type="search"
+              inputmode="search"
+              autocomplete="off"
+              placeholder="姓・名の一部を入力"
+            />
+          </label>
+          <button class="btn btn-ghost search-clear" id="clearSearchBtn" type="button">検索を解除</button>
+          <p class="record-count" id="recordCount" aria-live="polite"></p>
+        </div>
+
         <div id="recordsList" class="records-list"></div>
       </section>
     </section>
@@ -1109,10 +1204,170 @@ function escapeHtml(value="") {
   }[ch]));
 }
 
-function renderRecords() {
+function normalizeSearchText(value="") {
+  return String(value)
+    .normalize("NFKC")
+    .toLocaleLowerCase("ja-JP")
+    .replace(/[\s　]+/g, "");
+}
+
+function ensureRecordIds(records) {
+  let changed = false;
+  const migrated = records.map((record, index) => {
+    if (record.id) return record;
+    changed = true;
+    return {
+      ...record,
+      id: `legacy-${Date.now()}-${index}-${Math.random().toString(36).slice(2,8)}`
+    };
+  });
+
+  if (changed) {
+    localStorage.setItem("approachBookRecords", JSON.stringify(migrated));
+  }
+  return migrated;
+}
+
+function getStoredRecords() {
   const records = JSON.parse(localStorage.getItem("approachBookRecords") || "[]");
+  return ensureRecordIds(records);
+}
+
+function deleteRecord(recordId) {
+  const records = getStoredRecords();
+  const target = records.find(record => record.id === recordId);
+  if (!target) {
+    alert("削除する記録が見つかりませんでした。");
+    return;
+  }
+
+  const label = `${target.customerName || "氏名未入力"}の${target.kind || "記録"}`;
+  if (!confirm(`${label}を削除しますか？\nこの操作は元に戻せません。`)) return;
+
+  const updated = records.filter(record => record.id !== recordId);
+  localStorage.setItem("approachBookRecords", JSON.stringify(updated));
+  renderRecords();
+}
+
+function recordToShareText(record) {
+  const line = (label, value) => `${label}：${value || "未入力"}`;
+  const list = (label, values) => {
+    const items = (values || []).filter(Boolean);
+    return `${label}：${items.length ? items.join(" / ") : "未入力・未選択"}`;
+  };
+
+  if (record.kind === "商談") {
+    const scores = record.scores || {};
+    const discAnswers = (record.discAnswers || []).map(item =>
+      `${item.question || "質問"}→${item.answer || "未回答"}${item.type ? `（${item.type}）` : ""}`
+    );
+    const barrierDetails = record.barrierDetails
+      || (record.barriers || []).map(title => ({ title, desc: "" }));
+    const motiveDetails = record.motiveDetails
+      || (record.motives || []).map(title => ({ title, desc: "" }));
+
+    const barrierLines = barrierDetails.map(item =>
+      `${item.title || "未入力"}${item.desc ? `：${item.desc}` : ""}`
+    );
+    const motiveLines = motiveDetails.map(item =>
+      `${item.title || "未入力"}${item.desc ? `：${item.desc}` : ""}`
+    );
+
+    return [
+      "【営業アプローチブック・商談記録】",
+      line("保存日時", record.createdAt),
+      "",
+      "■ 顧客基本情報",
+      line("顧客名", record.customerName),
+      line("担当者", record.staffName),
+      line("現在の車", record.currentCar),
+      line("検討車種", record.targetCar),
+      line("予算", record.budget),
+      line("購入時期", record.purchaseTiming),
+      line("商談メモ", record.memo),
+      "",
+      "■ DISC簡易診断",
+      line("判定", record.disc),
+      `点数：D ${scores.D ?? 0} / I ${scores.I ?? 0} / S ${scores.S ?? 0} / C ${scores.C ?? 0}`,
+      list("各回答", discAnswers),
+      "",
+      "■ 購入障壁",
+      list("選択内容", barrierLines),
+      "",
+      "■ プラス動機",
+      list("選択内容", motiveLines),
+      "",
+      "■ 推奨アプローチ",
+      line("顧客タイプ", record.profileTitle || record.disc),
+      line("特徴", record.profileDescription),
+      list("商談の順番", record.talkOrder),
+      list("キラーワード", record.killerWords),
+      line("避けたい対応", record.avoidAction)
+    ].join("\n");
+  }
+
+  return [
+    "【営業アプローチブック・購入後アンケート】",
+    line("保存日時", record.createdAt),
+    line("顧客名", record.customerName),
+    line("購入車種", record.car),
+    line("実施時期", record.timing),
+    line("満足度", record.satisfaction ? `${record.satisfaction}/5` : ""),
+    line("購入前の期待", record.expected),
+    line("実際に良かったこと", record.realized),
+    line("想定とのズレ・不満", record.gap || "なし"),
+    line("体験談", record.testimonial)
+  ].join("\n");
+}
+
+async function shareRecord(recordId) {
+  const record = getStoredRecords().find(item => item.id === recordId);
+  if (!record) {
+    alert("共有する記録が見つかりませんでした。");
+    return;
+  }
+
+  const text = recordToShareText(record);
+  const title = `${record.customerName || "顧客"}の${record.kind || "保存記録"}`;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title, text });
+      return;
+    } catch (error) {
+      if (error?.name === "AbortError") return;
+      console.warn("Web Share failed:", error);
+    }
+  }
+
+  // Web Share APIが使えない場合はLINEの共有URLへ移動
+  const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
+  window.location.href = lineUrl;
+}
+
+function renderRecords() {
+  const records = getStoredRecords();
+  const searchInput = el("recordSearch");
+  const query = normalizeSearchText(searchInput?.value || "");
+
+  const filteredRecords = records.filter(record => {
+    if (!query) return true;
+    return normalizeSearchText(record.customerName || "").includes(query);
+  });
+
+  if (el("recordCount")) {
+    el("recordCount").textContent = query
+      ? `${records.length}件中 ${filteredRecords.length}件を表示`
+      : `${records.length}件を表示`;
+  }
+
   if (!records.length) {
     el("recordsList").innerHTML = `<div class="empty">保存記録はまだありません。</div>`;
+    return;
+  }
+
+  if (!filteredRecords.length) {
+    el("recordsList").innerHTML = `<div class="empty">「${escapeHtml(searchInput?.value || "")}」に一致する顧客名はありません。</div>`;
     return;
   }
 
@@ -1121,8 +1376,22 @@ function renderRecords() {
     if (!items || !items.length) return `<span class="record-empty">未入力・未選択</span>`;
     return `<ul class="record-list">${items.map(x => `<li>${escapeHtml(x)}</li>`).join("")}</ul>`;
   };
+  const actionButtons = record => `
+    <div class="record-actions">
+      <button
+        class="btn btn-line record-action-btn"
+        type="button"
+        data-share-record="${escapeHtml(record.id)}"
+      >LINEで共有</button>
+      <button
+        class="btn btn-danger record-action-btn"
+        type="button"
+        data-delete-record="${escapeHtml(record.id)}"
+      >この記録を削除</button>
+    </div>
+  `;
 
-  el("recordsList").innerHTML = records.map(r => {
+  el("recordsList").innerHTML = filteredRecords.map(r => {
     if (r.kind === "商談") {
       const scores = r.scores || {};
       const discAnswers = r.discAnswers || [];
@@ -1146,7 +1415,9 @@ function renderRecords() {
               <h3>${show(r.customerName)} — ${show(r.targetCar || "検討車種未入力")}</h3>
               <p class="record-meta">${show(r.createdAt)} / 担当：${show(r.staffName)}</p>
             </div>
-            <span class="record-tag">商談・${show(r.disc)}</span>
+            <div class="record-heading-actions">
+              <span class="record-tag">商談・${show(r.disc)}</span>
+            </div>
           </div>
 
           <div class="record-body">
@@ -1196,6 +1467,7 @@ function renderRecords() {
               <strong>避けたい対応：</strong>${show(r.avoidAction)}
             </div>
           </div>
+          ${actionButtons(r)}
         </article>
       `;
     }
@@ -1207,7 +1479,9 @@ function renderRecords() {
             <h3>${show(r.customerName)} — ${show(r.car || "購入車種未入力")}</h3>
             <p class="record-meta">${show(r.createdAt)} / ${show(r.timing)}</p>
           </div>
-          <span class="record-tag">満足度 ${show(r.satisfaction)}/5</span>
+          <div class="record-heading-actions">
+            <span class="record-tag">満足度 ${show(r.satisfaction)}/5</span>
+          </div>
         </div>
         <div class="record-body">
           <strong>期待：</strong>${show(r.expected)}<br>
@@ -1215,6 +1489,7 @@ function renderRecords() {
           <strong>ズレ：</strong>${show(r.gap || "なし")}<br>
           <strong>体験談：</strong>${show(r.testimonial)}
         </div>
+        ${actionButtons(r)}
       </article>
     `;
   }).join("");
@@ -1329,9 +1604,31 @@ document.addEventListener("DOMContentLoaded", () => {
   el("resetBtn").addEventListener("click", resetInputs);
   el("printBtn").addEventListener("click", () => window.print());
   el("exportCsvBtn").addEventListener("click", exportCsv);
+
+  el("recordSearch").addEventListener("input", renderRecords);
+  el("clearSearchBtn").addEventListener("click", () => {
+    el("recordSearch").value = "";
+    renderRecords();
+    el("recordSearch").focus();
+  });
+
+  el("recordsList").addEventListener("click", event => {
+    const deleteButton = event.target.closest("[data-delete-record]");
+    if (deleteButton) {
+      deleteRecord(deleteButton.dataset.deleteRecord);
+      return;
+    }
+
+    const shareButton = event.target.closest("[data-share-record]");
+    if (shareButton) {
+      shareRecord(shareButton.dataset.shareRecord);
+    }
+  });
+
   el("clearRecordsBtn").addEventListener("click", () => {
-    if (confirm("保存済みの全記録を削除しますか？")) {
+    if (confirm("保存済みの全記録を削除しますか？\nこの操作は元に戻せません。")) {
       localStorage.removeItem("approachBookRecords");
+      el("recordSearch").value = "";
       renderRecords();
     }
   });
