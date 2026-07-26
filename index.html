@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="営業ブック" />
   <meta name="format-detection" content="telephone=no" />
-<title>営業アプローチブック MVP</title>
+<title>営業アプローチブック・担当者マッチング版</title>
   <style>
 
 :root {
@@ -565,6 +565,220 @@ button, .option-card, .answer { -webkit-tap-highlight-color: transparent; }
   }
 }
 
+
+.inline-check {
+  align-content: center;
+  grid-template-columns: auto 1fr;
+  column-gap: 9px;
+  padding: 10px 0;
+}
+.inline-check input {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+}
+.inline-check span,
+.inline-check small {
+  grid-column: 2;
+}
+.inline-check small {
+  color: var(--muted);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.match-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.match-toolbar p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.staff-match-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 14px;
+}
+.staff-match-item {
+  position: relative;
+  padding: 18px;
+  border: 2px solid var(--line);
+  border-radius: 15px;
+  background: var(--surface-soft);
+}
+.staff-match-item.rank-1 {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+.staff-match-rank {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #0f172a;
+  color: white;
+  font-size: 12px;
+  font-weight: 900;
+}
+.staff-match-item h3 {
+  margin: 0;
+  font-size: 20px;
+}
+.staff-match-score {
+  margin: 7px 0 12px;
+  color: var(--primary-dark);
+  font-size: 22px;
+  font-weight: 900;
+}
+.staff-match-meta {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.staff-match-reasons {
+  margin: 12px 0;
+  padding-left: 20px;
+  line-height: 1.65;
+}
+.staff-match-warning {
+  padding: 10px;
+  border-radius: 9px;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.match-footnote {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.staff-layout {
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr);
+}
+.staff-details {
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface-soft);
+  overflow: hidden;
+}
+.staff-details summary {
+  cursor: pointer;
+  padding: 14px 16px;
+  font-weight: 900;
+  color: var(--text);
+}
+.staff-details > p {
+  margin: 0;
+  padding: 0 16px 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.rating-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 10px;
+  padding: 0 16px 16px;
+}
+.staff-check-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 8px;
+  padding: 0 16px 16px;
+}
+.staff-check {
+  display: flex;
+  grid-template-columns: none;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: white;
+}
+.staff-check input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  flex: 0 0 auto;
+}
+.staff-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+.staff-card {
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface-soft);
+}
+.staff-card h3 {
+  margin: 0 0 5px;
+}
+.staff-card-meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.staff-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.staff-mini-tag {
+  padding: 4px 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: white;
+  font-size: 11px;
+  font-weight: 800;
+}
+.staff-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 13px;
+}
+
+@media (max-width: 900px) {
+  .staff-layout,
+  .staff-match-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 620px) {
+  .match-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .rating-grid,
+  .staff-check-grid {
+    grid-template-columns: 1fr;
+  }
+  .staff-card-actions {
+    flex-direction: column;
+  }
+}
+@media print {
+  #staff.tab-panel,
+  .match-toolbar,
+  .match-footnote {
+    display: none !important;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -593,6 +807,7 @@ button, .option-card, .answer { -webkit-tap-highlight-color: transparent; }
     <nav class="tabs" aria-label="画面切り替え">
       <button class="tab active" data-tab="deal">商談設計</button>
       <button class="tab" data-tab="survey">購入後アンケート</button>
+      <button class="tab" data-tab="staff">担当者登録</button>
       <button class="tab" data-tab="records">保存記録</button>
     </nav>
 
@@ -631,6 +846,23 @@ button, .option-card, .answer { -webkit-tap-highlight-color: transparent; }
                 <option>半年以内</option>
                 <option>時期未定</option>
               </select>
+            </label>
+            <label>顧客年代（任意）
+              <select id="customerAgeBand">
+                <option value="">選択しない</option>
+                <option value="20">20代</option>
+                <option value="30">30代</option>
+                <option value="40">40代</option>
+                <option value="50">50代</option>
+                <option value="60">60代</option>
+                <option value="70">70代</option>
+                <option value="80">80代以上</option>
+              </select>
+            </label>
+            <label class="inline-check">
+              <input id="sameGenerationPreferred" type="checkbox" />
+              <span>顧客が同年代の担当者を希望</span>
+              <small>チェック時だけ、年齢を同点時の補助判断に使います。</small>
             </label>
           </div>
           <label class="full">商談メモ
@@ -729,6 +961,25 @@ button, .option-card, .answer { -webkit-tap-highlight-color: transparent; }
           <button class="btn btn-success" id="saveDealBtn">商談記録を保存</button>
         </div>
       </section>
+
+      <section class="card staff-match-card">
+        <div class="section-heading">
+          <span class="step">6</span>
+          <div>
+            <h2>最適な担当者候補</h2>
+            <p>顧客のDISC・購入障壁・動機・検討車種と、登録済み担当者の特性を照合します。</p>
+          </div>
+        </div>
+
+        <div class="match-toolbar">
+          <p id="staffMatchNote">担当者を登録し、DISC診断に回答すると候補を表示します。</p>
+          <button class="btn btn-primary" id="matchStaffBtn" type="button">担当者候補を再計算</button>
+        </div>
+        <div id="staffMatchResults" class="staff-match-grid"></div>
+        <p class="match-footnote">
+          年齢は、顧客が「同年代の担当者を希望」とした場合だけ、同点時の補助情報として使用します。
+        </p>
+      </section>
     </section>
 
     <section id="survey" class="tab-panel">
@@ -780,6 +1031,133 @@ button, .option-card, .answer { -webkit-tap-highlight-color: transparent; }
           <button class="btn btn-success" id="saveSurveyBtn">アンケートを保存</button>
         </div>
       </section>
+    </section>
+
+
+    <section id="staff" class="tab-panel">
+      <div class="grid staff-layout">
+        <section class="card">
+          <div class="section-heading">
+            <span class="step">B</span>
+            <div>
+              <h2>担当者マスタ登録</h2>
+              <p>担当者の性格、対応力、専門性、実績、稼働状況を登録します。</p>
+            </div>
+          </div>
+
+          <form id="staffForm">
+            <input id="staffEditId" type="hidden" />
+
+            <div class="form-grid">
+              <label>担当者名
+                <input id="staffMasterName" type="text" required placeholder="例：田中 一郎" />
+              </label>
+              <label>年齢（任意）
+                <input id="staffAge" type="number" min="18" max="90" placeholder="例：38" />
+              </label>
+              <label>営業経験年数
+                <input id="staffExperience" type="number" min="0" max="60" value="0" />
+              </label>
+              <label>現在の担当商談数
+                <input id="staffActiveDeals" type="number" min="0" max="99" value="0" />
+              </label>
+              <label>主DISCタイプ
+                <select id="staffPrimaryDisc" required>
+                  <option value="">選択してください</option>
+                  <option value="D">D：主導型</option>
+                  <option value="I">I：感化型</option>
+                  <option value="S">S：安定型</option>
+                  <option value="C">C：慎重型</option>
+                </select>
+              </label>
+              <label>副DISCタイプ
+                <select id="staffSecondaryDisc">
+                  <option value="">なし・未設定</option>
+                  <option value="D">D：主導型</option>
+                  <option value="I">I：感化型</option>
+                  <option value="S">S：安定型</option>
+                  <option value="C">C：慎重型</option>
+                </select>
+              </label>
+              <label>現在の対応余力
+                <select id="staffAvailability">
+                  <option value="available">余裕あり</option>
+                  <option value="normal" selected>通常</option>
+                  <option value="busy">忙しい</option>
+                  <option value="unavailable">現在担当不可</option>
+                </select>
+              </label>
+              <label>顧客満足度実績（1〜5）
+                <select id="staffSatisfaction">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3" selected>3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </label>
+              <label>成約率（任意・％）
+                <input id="staffConversionRate" type="number" min="0" max="100" placeholder="例：35" />
+              </label>
+            </div>
+
+            <details class="staff-details" open>
+              <summary>営業スタイル・対応力</summary>
+              <p>各項目を1（苦手）〜5（非常に得意）で登録します。</p>
+              <div id="staffSkillFields" class="rating-grid"></div>
+            </details>
+
+            <details class="staff-details" open>
+              <summary>購入障壁への対応力</summary>
+              <div id="staffBarrierFields" class="rating-grid"></div>
+            </details>
+
+            <details class="staff-details" open>
+              <summary>購入動機への提案力</summary>
+              <div id="staffMotiveFields" class="rating-grid"></div>
+            </details>
+
+            <details class="staff-details">
+              <summary>商品・業務の専門分野</summary>
+              <div id="staffSpecialtyFields" class="staff-check-grid"></div>
+            </details>
+
+            <details class="staff-details">
+              <summary>得意な顧客層</summary>
+              <div id="staffCustomerGroupFields" class="staff-check-grid"></div>
+            </details>
+
+            <details class="staff-details">
+              <summary>実体験・生活背景</summary>
+              <div id="staffBackgroundFields" class="staff-check-grid"></div>
+            </details>
+
+            <label class="full">苦手な対応・注意点
+              <textarea
+                id="staffWeaknesses"
+                rows="3"
+                placeholder="例：説明が長くなりやすい／即決を促しすぎる"
+              ></textarea>
+            </label>
+
+            <div class="action-row">
+              <button class="btn btn-ghost" id="resetStaffFormBtn" type="button">新規入力に戻す</button>
+              <button class="btn btn-success" id="saveStaffBtn" type="submit">担当者を登録</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card">
+          <div class="records-header">
+            <div>
+              <h2>登録済み担当者</h2>
+              <p>編集・削除すると、担当者候補の計算にもすぐ反映されます。</p>
+            </div>
+            <span class="record-tag" id="staffCount">0人</span>
+          </div>
+          <div id="staffList" class="staff-list"></div>
+        </section>
+      </div>
     </section>
 
     <section id="records" class="tab-panel">
@@ -891,6 +1269,71 @@ const motives = [
   { id: "ownership", title: "所有満足感", desc: "見た目、憧れ、自分らしさを重視。" }
 ];
 
+
+const staffSkillDefinitions = [
+  { id: "listening", label: "聞く力" },
+  { id: "empathy", label: "共感力" },
+  { id: "decisiveness", label: "決断を促す力" },
+  { id: "numbers", label: "数字・比較説明力" },
+  { id: "smalltalk", label: "雑談・関係構築力" },
+  { id: "familyCare", label: "家族への配慮" },
+  { id: "followUp", label: "購入後フォロー力" },
+  { id: "complaint", label: "クレーム対応力" }
+];
+
+const staffSpecialtyDefinitions = [
+  { id: "kei", label: "軽自動車" },
+  { id: "minivan", label: "ミニバン" },
+  { id: "suv", label: "SUV・四駆" },
+  { id: "imported", label: "輸入車" },
+  { id: "commercial", label: "商用車・ハイエース" },
+  { id: "welfare", label: "福祉車両" },
+  { id: "family", label: "ファミリーカー" },
+  { id: "luxury", label: "高級車" },
+  { id: "loan", label: "ローン・支払設計" },
+  { id: "insurance", label: "保険・保証" },
+  { id: "tradein", label: "下取り・リセール" },
+  { id: "corporate", label: "法人契約" }
+];
+
+const staffCustomerGroupDefinitions = [
+  { id: "first", label: "初めて車を買う人" },
+  { id: "family", label: "子育て・家族世帯" },
+  { id: "senior", label: "シニア顧客" },
+  { id: "expert", label: "車に詳しい人" },
+  { id: "novice", label: "車に詳しくない人" },
+  { id: "price", label: "価格重視の人" },
+  { id: "cautious", label: "慎重に比較する人" },
+  { id: "quick", label: "即決・スピード重視" },
+  { id: "corporate", label: "法人・個人事業主" },
+  { id: "familyDecision", label: "家族の合意が必要な商談" }
+];
+
+const staffBackgroundDefinitions = [
+  { id: "parenting", label: "子育て経験" },
+  { id: "minivanOwner", label: "ミニバン所有経験" },
+  { id: "commercialUse", label: "商用車・仕事利用経験" },
+  { id: "longCommute", label: "長距離通勤・長距離運転" },
+  { id: "caregiving", label: "介護・福祉車両の経験" },
+  { id: "loanExperience", label: "自動車ローン利用経験" },
+  { id: "accidentBreakdown", label: "事故・故障・買い替え経験" },
+  { id: "outdoor", label: "カスタム・アウトドア経験" }
+];
+
+const discAffinity = {
+  D: { D: 1.00, C: 0.82, I: 0.55, S: 0.38 },
+  I: { I: 1.00, S: 0.82, D: 0.55, C: 0.38 },
+  S: { S: 1.00, I: 0.82, C: 0.62, D: 0.35 },
+  C: { C: 1.00, D: 0.82, S: 0.62, I: 0.35 }
+};
+
+const discRequiredSkills = {
+  D: ["decisiveness", "numbers"],
+  I: ["smalltalk", "empathy"],
+  S: ["listening", "empathy", "familyCare", "followUp"],
+  C: ["numbers", "listening"]
+};
+
 const profiles = {
   D: {
     icon: "⚡",
@@ -999,7 +1442,7 @@ const motiveHooks = {
   }
 };
 
-const state = { scores: { D:0, I:0, S:0, C:0 }, disc: null };
+const state = { scores: { D:0, I:0, S:0, C:0 }, disc: null, staffMatches: [] };
 
 function el(id) { return document.getElementById(id); }
 
@@ -1067,6 +1510,7 @@ function generateRecommendation() {
     el("talkOrder").innerHTML = "";
     el("killerWords").innerHTML = "";
     el("avoidAction").textContent = "診断後に表示します。";
+    matchStaff();
     return;
   }
 
@@ -1094,6 +1538,7 @@ function generateRecommendation() {
     C: "linear-gradient(145deg,#1e3a8a,#2563eb)"
   };
   panel.style.background = gradients[type];
+  matchStaff();
 }
 
 function getSelectedLabels(name, source) {
@@ -1126,6 +1571,577 @@ function getDiscAnswers() {
   });
 }
 
+
+function makeId(prefix="id") {
+  return crypto.randomUUID
+    ? crypto.randomUUID()
+    : `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2,9)}`;
+}
+
+function definitionLabel(definitions, id) {
+  return definitions.find(item => item.id === id)?.label || id;
+}
+
+function renderRatingFields(targetId, definitions, prefix) {
+  el(targetId).innerHTML = definitions.map(item => `
+    <label>${item.label}
+      <select id="${prefix}-${item.id}">
+        <option value="1">1：苦手</option>
+        <option value="2">2</option>
+        <option value="3" selected>3：標準</option>
+        <option value="4">4</option>
+        <option value="5">5：非常に得意</option>
+      </select>
+    </label>
+  `).join("");
+}
+
+function renderStaffCheckboxFields(targetId, definitions, name) {
+  el(targetId).innerHTML = definitions.map(item => `
+    <label class="staff-check">
+      <input type="checkbox" name="${name}" value="${item.id}" />
+      <span>${item.label}</span>
+    </label>
+  `).join("");
+}
+
+function renderStaffFormFields() {
+  renderRatingFields("staffSkillFields", staffSkillDefinitions, "staffSkill");
+  renderRatingFields(
+    "staffBarrierFields",
+    barriers.map(item => ({ id: item.id, label: item.title })),
+    "staffBarrier"
+  );
+  renderRatingFields(
+    "staffMotiveFields",
+    motives.map(item => ({ id: item.id, label: item.title })),
+    "staffMotive"
+  );
+  renderStaffCheckboxFields("staffSpecialtyFields", staffSpecialtyDefinitions, "staffSpecialty");
+  renderStaffCheckboxFields("staffCustomerGroupFields", staffCustomerGroupDefinitions, "staffCustomerGroup");
+  renderStaffCheckboxFields("staffBackgroundFields", staffBackgroundDefinitions, "staffBackground");
+}
+
+function getStaffMembers() {
+  try {
+    return JSON.parse(localStorage.getItem("approachBookStaff") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveStaffMembers(staffMembers) {
+  localStorage.setItem("approachBookStaff", JSON.stringify(staffMembers));
+}
+
+function readRatingObject(prefix, definitions) {
+  return Object.fromEntries(
+    definitions.map(item => [item.id, Number(el(`${prefix}-${item.id}`).value || 3)])
+  );
+}
+
+function setRatingObject(prefix, definitions, values={}) {
+  definitions.forEach(item => {
+    const node = el(`${prefix}-${item.id}`);
+    if (node) node.value = String(values[item.id] ?? 3);
+  });
+}
+
+function checkedStaffValues(name) {
+  return [...document.querySelectorAll(`input[name="${name}"]:checked`)]
+    .map(input => input.value);
+}
+
+function setCheckedStaffValues(name, values=[]) {
+  const selected = new Set(values);
+  document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+    input.checked = selected.has(input.value);
+  });
+}
+
+function resetStaffForm() {
+  el("staffForm").reset();
+  el("staffEditId").value = "";
+  el("staffExperience").value = "0";
+  el("staffActiveDeals").value = "0";
+  el("staffAvailability").value = "normal";
+  el("staffSatisfaction").value = "3";
+  setRatingObject("staffSkill", staffSkillDefinitions, {});
+  setRatingObject(
+    "staffBarrier",
+    barriers.map(item => ({ id: item.id })),
+    {}
+  );
+  setRatingObject(
+    "staffMotive",
+    motives.map(item => ({ id: item.id })),
+    {}
+  );
+  setCheckedStaffValues("staffSpecialty", []);
+  setCheckedStaffValues("staffCustomerGroup", []);
+  setCheckedStaffValues("staffBackground", []);
+  el("saveStaffBtn").textContent = "担当者を登録";
+}
+
+function collectStaffForm() {
+  const name = el("staffMasterName").value.trim();
+  const primaryDisc = el("staffPrimaryDisc").value;
+
+  if (!name) {
+    alert("担当者名を入力してください。");
+    return null;
+  }
+  if (!primaryDisc) {
+    alert("主DISCタイプを選択してください。");
+    return null;
+  }
+
+  const ageValue = Number(el("staffAge").value);
+  const conversionValue = Number(el("staffConversionRate").value);
+
+  return {
+    id: el("staffEditId").value || makeId("staff"),
+    name,
+    age: Number.isFinite(ageValue) && ageValue > 0 ? ageValue : null,
+    experienceYears: Number(el("staffExperience").value || 0),
+    activeDeals: Number(el("staffActiveDeals").value || 0),
+    primaryDisc,
+    secondaryDisc: el("staffSecondaryDisc").value,
+    availability: el("staffAvailability").value,
+    satisfaction: Number(el("staffSatisfaction").value || 3),
+    conversionRate: Number.isFinite(conversionValue) && el("staffConversionRate").value !== ""
+      ? conversionValue
+      : null,
+    skills: readRatingObject("staffSkill", staffSkillDefinitions),
+    barrierStrengths: readRatingObject(
+      "staffBarrier",
+      barriers.map(item => ({ id: item.id }))
+    ),
+    motiveStrengths: readRatingObject(
+      "staffMotive",
+      motives.map(item => ({ id: item.id }))
+    ),
+    specialties: checkedStaffValues("staffSpecialty"),
+    customerGroups: checkedStaffValues("staffCustomerGroup"),
+    backgrounds: checkedStaffValues("staffBackground"),
+    weaknesses: el("staffWeaknesses").value.trim(),
+    updatedAt: new Date().toLocaleString("ja-JP")
+  };
+}
+
+function saveStaff(event) {
+  event.preventDefault();
+  const staff = collectStaffForm();
+  if (!staff) return;
+
+  const staffMembers = getStaffMembers();
+  const existingIndex = staffMembers.findIndex(item => item.id === staff.id);
+
+  if (existingIndex >= 0) {
+    staffMembers[existingIndex] = staff;
+  } else {
+    staffMembers.unshift(staff);
+  }
+
+  saveStaffMembers(staffMembers);
+  renderStaffList();
+  resetStaffForm();
+  matchStaff();
+  alert(existingIndex >= 0 ? "担当者情報を更新しました。" : "担当者を登録しました。");
+}
+
+function editStaff(staffId) {
+  const staff = getStaffMembers().find(item => item.id === staffId);
+  if (!staff) return;
+
+  el("staffEditId").value = staff.id;
+  el("staffMasterName").value = staff.name || "";
+  el("staffAge").value = staff.age || "";
+  el("staffExperience").value = staff.experienceYears ?? 0;
+  el("staffActiveDeals").value = staff.activeDeals ?? 0;
+  el("staffPrimaryDisc").value = staff.primaryDisc || "";
+  el("staffSecondaryDisc").value = staff.secondaryDisc || "";
+  el("staffAvailability").value = staff.availability || "normal";
+  el("staffSatisfaction").value = String(staff.satisfaction ?? 3);
+  el("staffConversionRate").value = staff.conversionRate ?? "";
+  setRatingObject("staffSkill", staffSkillDefinitions, staff.skills || {});
+  setRatingObject(
+    "staffBarrier",
+    barriers.map(item => ({ id: item.id })),
+    staff.barrierStrengths || {}
+  );
+  setRatingObject(
+    "staffMotive",
+    motives.map(item => ({ id: item.id })),
+    staff.motiveStrengths || {}
+  );
+  setCheckedStaffValues("staffSpecialty", staff.specialties || []);
+  setCheckedStaffValues("staffCustomerGroup", staff.customerGroups || []);
+  setCheckedStaffValues("staffBackground", staff.backgrounds || []);
+  el("staffWeaknesses").value = staff.weaknesses || "";
+  el("saveStaffBtn").textContent = "担当者情報を更新";
+
+  document.querySelector('[data-tab="staff"]').click();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function deleteStaff(staffId) {
+  const staffMembers = getStaffMembers();
+  const target = staffMembers.find(item => item.id === staffId);
+  if (!target) return;
+
+  if (!confirm(`${target.name}さんの担当者登録を削除しますか？`)) return;
+  saveStaffMembers(staffMembers.filter(item => item.id !== staffId));
+  renderStaffList();
+  matchStaff();
+}
+
+function availabilityLabel(value) {
+  return {
+    available: "余裕あり",
+    normal: "通常",
+    busy: "忙しい",
+    unavailable: "現在担当不可"
+  }[value] || "通常";
+}
+
+function renderStaffList() {
+  const staffMembers = getStaffMembers();
+  el("staffCount").textContent = `${staffMembers.length}人`;
+
+  if (!staffMembers.length) {
+    el("staffList").innerHTML = `
+      <div class="empty">
+        担当者はまだ登録されていません。<br>
+        左のフォームから最初の担当者を登録してください。
+      </div>
+    `;
+    return;
+  }
+
+  el("staffList").innerHTML = staffMembers.map(staff => {
+    const specialtyLabels = (staff.specialties || [])
+      .slice(0, 5)
+      .map(id => definitionLabel(staffSpecialtyDefinitions, id));
+
+    return `
+      <article class="staff-card">
+        <h3>${escapeHtml(staff.name)}</h3>
+        <p class="staff-card-meta">
+          ${staff.primaryDisc || "未設定"}${staff.secondaryDisc ? `／副${staff.secondaryDisc}` : ""}
+          ・経験 ${escapeHtml(staff.experienceYears ?? 0)}年
+          ${staff.age ? `・${escapeHtml(staff.age)}歳` : ""}
+          ・${escapeHtml(availabilityLabel(staff.availability))}
+          ・担当中 ${escapeHtml(staff.activeDeals ?? 0)}件
+        </p>
+        <div class="staff-card-tags">
+          ${specialtyLabels.length
+            ? specialtyLabels.map(label => `<span class="staff-mini-tag">${escapeHtml(label)}</span>`).join("")
+            : `<span class="staff-mini-tag">専門分野未設定</span>`}
+        </div>
+        ${staff.weaknesses
+          ? `<p class="staff-match-warning">注意点：${escapeHtml(staff.weaknesses)}</p>`
+          : ""}
+        <div class="staff-card-actions">
+          <button class="btn btn-primary" type="button" data-edit-staff="${escapeHtml(staff.id)}">編集</button>
+          <button class="btn btn-danger" type="button" data-delete-staff="${escapeHtml(staff.id)}">削除</button>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function selectedAverage(ids, ratings, neutralScore) {
+  if (!ids.length) return neutralScore;
+  return ids.reduce((sum, id) => sum + Number(ratings?.[id] ?? 3), 0) / ids.length;
+}
+
+function inferCustomerNeeds() {
+  const currentCar = el("currentCar").value;
+  const targetCar = el("targetCar").value;
+  const budget = el("budget").value;
+  const memo = el("dealMemo").value;
+  const purchaseTiming = el("purchaseTiming").value;
+  const ageBand = Number(el("customerAgeBand").value || 0);
+  const text = `${currentCar} ${targetCar} ${budget} ${memo} ${purchaseTiming}`.normalize("NFKC");
+
+  const specialties = new Set();
+  const groups = new Set();
+  const backgrounds = new Set();
+
+  const addIf = (regex, set, value) => {
+    if (regex.test(text)) set.add(value);
+  };
+
+  addIf(/軽自動車|軽\b|N-BOX|タント|スペーシア|ワゴンR/i, specialties, "kei");
+  addIf(/ミニバン|アルファード|ヴェルファイア|ノア|ヴォクシー|セレナ|ステップワゴン/i, specialties, "minivan");
+  addIf(/SUV|四駆|ハリアー|RAV4|ランドクルーザー|ランクル|CX-5|フォレスター/i, specialties, "suv");
+  addIf(/輸入車|BMW|ベンツ|メルセデス|アウディ|フォルクスワーゲン|VW|ボルボ|MINI|ポルシェ/i, specialties, "imported");
+  addIf(/ハイエース|キャラバン|商用|貨物|トラック|バン|営業車/i, specialties, "commercial");
+  addIf(/福祉|車椅子|車いす|介護/i, specialties, "welfare");
+  addIf(/家族|子ども|子供|送迎|ファミリー/i, specialties, "family");
+  addIf(/高級|レクサス|クラウン/i, specialties, "luxury");
+  addIf(/ローン|頭金|月々|分割/i, specialties, "loan");
+  addIf(/保険|保証|故障|安全/i, specialties, "insurance");
+  addIf(/下取|下取り|リセール|値落ち|売却/i, specialties, "tradein");
+  addIf(/法人|会社|事業|個人事業/i, specialties, "corporate");
+
+  const selectedBarriers = selectedValues("barrier");
+  const selectedMotives = selectedValues("motive");
+  if (selectedBarriers.includes("price")) specialties.add("loan");
+  if (selectedBarriers.includes("loss")) specialties.add("tradein");
+  if (selectedBarriers.includes("running")) specialties.add("insurance");
+  if (selectedMotives.includes("economy")) specialties.add("tradein");
+  if (selectedMotives.includes("safety")) specialties.add("insurance");
+
+  addIf(/初めて|初購入|初心者|免許取りたて/i, groups, "first");
+  addIf(/家族|子ども|子供|子育て|送迎/i, groups, "family");
+  addIf(/高齢|シニア|介護/i, groups, "senior");
+  addIf(/詳しい|型式|馬力|スペック|カスタム/i, groups, "expert");
+  addIf(/詳しくない|わからない|分からない|初心者/i, groups, "novice");
+  addIf(/価格|安い|予算|月々/i, groups, "price");
+  addIf(/比較|慎重|迷い|後悔|検討/i, groups, "cautious");
+  addIf(/即決|今すぐ|急ぎ|早く/i, groups, "quick");
+  addIf(/法人|会社|事業|個人事業/i, groups, "corporate");
+  addIf(/妻|夫|家族|親|相談|合意/i, groups, "familyDecision");
+
+  if (state.disc === "D") groups.add("quick");
+  if (state.disc === "C" || state.disc === "S") groups.add("cautious");
+  if (selectedBarriers.includes("price") || selectedMotives.includes("economy")) groups.add("price");
+  if (ageBand >= 60) groups.add("senior");
+
+  if (groups.has("family")) {
+    backgrounds.add("parenting");
+    backgrounds.add("minivanOwner");
+  }
+  if (specialties.has("commercial") || groups.has("corporate")) backgrounds.add("commercialUse");
+  if (groups.has("senior") || specialties.has("welfare")) backgrounds.add("caregiving");
+  if (specialties.has("loan")) backgrounds.add("loanExperience");
+  if (specialties.has("insurance")) backgrounds.add("accidentBreakdown");
+  if (/長距離|通勤|旅行|遠出/.test(text)) backgrounds.add("longCommute");
+  if (/アウトドア|キャンプ|釣り|カスタム/.test(text)) backgrounds.add("outdoor");
+
+  return {
+    specialties: [...specialties],
+    groups: [...groups],
+    backgrounds: [...backgrounds],
+    ageBand
+  };
+}
+
+function scoreStaffForCustomer(staff, needs) {
+  if (staff.availability === "unavailable") return null;
+
+  const customerDisc = state.disc;
+  const skill = id => Number(staff.skills?.[id] ?? 3);
+
+  const primaryAffinity = discAffinity[customerDisc]?.[staff.primaryDisc] ?? 0.35;
+  const secondaryAffinity = staff.secondaryDisc
+    ? (discAffinity[customerDisc]?.[staff.secondaryDisc] ?? 0.35)
+    : 0;
+
+  const requiredSkills = discRequiredSkills[customerDisc] || [];
+  const requiredSkillAverage = requiredSkills.length
+    ? requiredSkills.reduce((sum, id) => sum + skill(id), 0) / requiredSkills.length
+    : 3;
+
+  const discScore = primaryAffinity * 12
+    + secondaryAffinity * 5
+    + (requiredSkillAverage / 5) * 8;
+
+  const selectedBarriers = selectedValues("barrier");
+  const selectedMotives = selectedValues("motive");
+  const barrierAverage = selectedAverage(selectedBarriers, staff.barrierStrengths, 2.5);
+  const motiveAverage = selectedAverage(selectedMotives, staff.motiveStrengths, 2.5);
+  const barrierScore = (barrierAverage / 5) * 25;
+  const motiveScore = (motiveAverage / 5) * 15;
+
+  const staffSpecialties = new Set(staff.specialties || []);
+  const matchedSpecialties = needs.specialties.filter(id => staffSpecialties.has(id));
+  const expertiseScore = needs.specialties.length
+    ? (matchedSpecialties.length / needs.specialties.length) * 15
+    : 7.5;
+
+  const staffGroups = new Set(staff.customerGroups || []);
+  const staffBackgrounds = new Set(staff.backgrounds || []);
+  const matchedGroups = needs.groups.filter(id => staffGroups.has(id));
+  const matchedBackgrounds = needs.backgrounds.filter(id => staffBackgrounds.has(id));
+  const customerNeedCount = needs.groups.length + needs.backgrounds.length;
+  const customerFitScore = customerNeedCount
+    ? ((matchedGroups.length + matchedBackgrounds.length) / customerNeedCount) * 10
+    : 5;
+
+  const availabilityPoints = {
+    available: 5,
+    normal: 3.7,
+    busy: 1.7
+  }[staff.availability] ?? 3.7;
+
+  const workloadPenalty = Math.min(Number(staff.activeDeals || 0) * 0.18, 2);
+  const experiencePoints = Math.min(Number(staff.experienceYears || 0) / 10, 1) * 2;
+  const satisfactionPoints = (Number(staff.satisfaction || 3) / 5) * 2;
+  const conversionPoints = staff.conversionRate == null
+    ? 0.5
+    : Math.min(Number(staff.conversionRate) / 50, 1) * 1;
+  const performanceScore = Math.max(
+    0,
+    availabilityPoints - workloadPenalty + experiencePoints + satisfactionPoints + conversionPoints
+  );
+
+  let ageTieBreaker = 0;
+  let ageReason = "";
+  if (
+    el("sameGenerationPreferred").checked
+    && needs.ageBand
+    && Number(staff.age) > 0
+  ) {
+    const ageCenter = needs.ageBand >= 80 ? 82 : needs.ageBand + 5;
+    const difference = Math.abs(Number(staff.age) - ageCenter);
+    ageTieBreaker = difference <= 5 ? 3 : difference <= 10 ? 2 : difference <= 15 ? 1 : 0;
+    if (ageTieBreaker >= 2) ageReason = "顧客の同年代希望にも合う";
+  }
+
+  const total = Math.round(Math.min(
+    100,
+    discScore + barrierScore + motiveScore + expertiseScore + customerFitScore + performanceScore
+  ));
+
+  const reasonCandidates = [
+    {
+      strength: discScore / 25,
+      text: `${customerDisc}タイプの顧客に合う話し方・対応力が高い`
+    },
+    {
+      strength: selectedBarriers.length ? barrierScore / 25 : 0,
+      text: `${selectedBarriers.map(id => barriers.find(x => x.id === id)?.title).filter(Boolean).join("・")}への対応力が高い`
+    },
+    {
+      strength: selectedMotives.length ? motiveScore / 15 : 0,
+      text: `${selectedMotives.map(id => motives.find(x => x.id === id)?.title).filter(Boolean).join("・")}を引き出す提案が得意`
+    },
+    {
+      strength: needs.specialties.length ? expertiseScore / 15 : 0,
+      text: matchedSpecialties.length
+        ? `${matchedSpecialties.map(id => definitionLabel(staffSpecialtyDefinitions, id)).join("・")}の専門性がある`
+        : ""
+    },
+    {
+      strength: customerNeedCount ? customerFitScore / 10 : 0,
+      text: [...matchedGroups, ...matchedBackgrounds].length
+        ? `顧客属性・利用背景との共通経験がある`
+        : ""
+    },
+    {
+      strength: performanceScore / 10,
+      text: `${availabilityLabel(staff.availability)}で、経験・実績も含めて対応しやすい`
+    },
+    {
+      strength: ageReason ? .75 : 0,
+      text: ageReason
+    }
+  ]
+    .filter(item => item.text && item.strength > 0)
+    .sort((a,b) => b.strength - a.strength);
+
+  const reasons = reasonCandidates.slice(0, 3).map(item => item.text);
+  if (!reasons.length) reasons.push("登録情報を総合して最も相性が高い");
+
+  return {
+    id: staff.id,
+    name: staff.name,
+    score: total,
+    ageTieBreaker,
+    primaryDisc: staff.primaryDisc,
+    secondaryDisc: staff.secondaryDisc,
+    age: staff.age,
+    experienceYears: staff.experienceYears,
+    availability: staff.availability,
+    activeDeals: staff.activeDeals,
+    reasons,
+    weaknesses: staff.weaknesses || ""
+  };
+}
+
+function renderStaffMatches(matches) {
+  state.staffMatches = matches.map(item => ({
+    id: item.id,
+    name: item.name,
+    score: item.score,
+    reasons: [...item.reasons],
+    primaryDisc: item.primaryDisc,
+    secondaryDisc: item.secondaryDisc
+  }));
+
+  if (!matches.length) {
+    el("staffMatchResults").innerHTML = "";
+    return;
+  }
+
+  el("staffMatchResults").innerHTML = matches.map((match, index) => `
+    <article class="staff-match-item ${index === 0 ? "rank-1" : ""}">
+      <span class="staff-match-rank">第${index + 1}候補</span>
+      <h3>${escapeHtml(match.name)}</h3>
+      <p class="staff-match-score">適合度 ${escapeHtml(match.score)}点</p>
+      <p class="staff-match-meta">
+        主${escapeHtml(match.primaryDisc || "未設定")}
+        ${match.secondaryDisc ? `・副${escapeHtml(match.secondaryDisc)}` : ""}
+        ${match.age ? `・${escapeHtml(match.age)}歳` : ""}
+        ・経験 ${escapeHtml(match.experienceYears ?? 0)}年
+        ・${escapeHtml(availabilityLabel(match.availability))}
+        ・担当中 ${escapeHtml(match.activeDeals ?? 0)}件
+      </p>
+      <ul class="staff-match-reasons">
+        ${match.reasons.map(reason => `<li>${escapeHtml(reason)}</li>`).join("")}
+      </ul>
+      ${match.weaknesses
+        ? `<p class="staff-match-warning">注意点：${escapeHtml(match.weaknesses)}</p>`
+        : ""}
+      <button
+        class="btn btn-primary"
+        type="button"
+        data-select-matched-staff="${escapeHtml(match.name)}"
+      >この担当者に設定</button>
+    </article>
+  `).join("");
+}
+
+function matchStaff() {
+  const staffMembers = getStaffMembers();
+
+  if (!staffMembers.length) {
+    el("staffMatchNote").textContent = "担当者が未登録です。「担当者登録」画面から登録してください。";
+    renderStaffMatches([]);
+    return;
+  }
+
+  if (!state.disc) {
+    el("staffMatchNote").textContent = "DISC簡易診断に1問以上回答すると、担当者候補を計算できます。";
+    renderStaffMatches([]);
+    return;
+  }
+
+  const needs = inferCustomerNeeds();
+  const matches = staffMembers
+    .map(staff => scoreStaffForCustomer(staff, needs))
+    .filter(Boolean)
+    .sort((a,b) =>
+      (b.score - a.score)
+      || (b.ageTieBreaker - a.ageTieBreaker)
+      || String(a.name).localeCompare(String(b.name), "ja")
+    )
+    .slice(0, 2);
+
+  if (!matches.length) {
+    el("staffMatchNote").textContent = "現在担当可能な担当者がいません。稼働状況を確認してください。";
+    renderStaffMatches([]);
+    return;
+  }
+
+  el("staffMatchNote").textContent =
+    `${staffMembers.length}人の登録情報から、顧客との相性が高い上位${matches.length}人を表示しています。`;
+  renderStaffMatches(matches);
+}
+
 function saveRecord(record) {
   const records = JSON.parse(localStorage.getItem("approachBookRecords") || "[]");
   records.unshift(record);
@@ -1155,6 +2171,8 @@ function saveDeal() {
     targetCar: el("targetCar").value.trim(),
     budget: el("budget").value.trim(),
     purchaseTiming: el("purchaseTiming").value,
+    customerAgeBand: el("customerAgeBand").value,
+    sameGenerationPreferred: el("sameGenerationPreferred").checked,
     memo: el("dealMemo").value.trim(),
 
     // 2. DISC簡易診断
@@ -1173,7 +2191,13 @@ function saveDeal() {
     profileDescription: profile?.description || el("discDescription").textContent,
     talkOrder: [...el("talkOrder").querySelectorAll("li")].map(x => x.textContent.trim()),
     killerWords: [...el("killerWords").querySelectorAll(".quote")].map(x => x.textContent.trim()),
-    avoidAction: el("avoidAction").textContent.trim()
+    avoidAction: el("avoidAction").textContent.trim(),
+    recommendedStaff: state.staffMatches.map(item => ({
+      id: item.id,
+      name: item.name,
+      score: item.score,
+      reasons: [...item.reasons]
+    }))
   };
 
   saveRecord(record);
@@ -1302,7 +2326,12 @@ function recordToShareText(record) {
       line("特徴", record.profileDescription),
       list("商談の順番", record.talkOrder),
       list("キラーワード", record.killerWords),
-      line("避けたい対応", record.avoidAction)
+      line("避けたい対応", record.avoidAction),
+      "",
+      "■ 担当者候補",
+      list("候補", (record.recommendedStaff || []).map((item, index) =>
+        `第${index + 1}候補：${item.name}（${item.score}点）— ${(item.reasons || []).join("／")}`
+      ))
     ].join("\n");
   }
 
@@ -1429,6 +2458,8 @@ function renderRecords() {
               <strong>検討車種：</strong>${show(r.targetCar)}<br>
               <strong>予算：</strong>${show(r.budget)}<br>
               <strong>購入時期：</strong>${show(r.purchaseTiming)}<br>
+              <strong>顧客年代：</strong>${r.customerAgeBand ? `${show(r.customerAgeBand)}代` : "未入力"}<br>
+              <strong>同年代希望：</strong>${r.sameGenerationPreferred ? "あり" : "なし"}<br>
               <strong>商談メモ：</strong>${show(r.memo)}
             </div>
 
@@ -1465,6 +2496,11 @@ function renderRecords() {
               <strong>キラーワード</strong>
               ${listHtml(r.killerWords || [])}
               <strong>避けたい対応：</strong>${show(r.avoidAction)}
+              <br><br>
+              <strong>担当者候補</strong>
+              ${listHtml((r.recommendedStaff || []).map((item, index) =>
+                `第${index + 1}候補：${item.name}（${item.score}点）— ${(item.reasons || []).join("／")}`
+              ))}
             </div>
           </div>
           ${actionButtons(r)}
@@ -1509,6 +2545,7 @@ function resetInputs() {
   state.scores = { D:0, I:0, S:0, C:0 };
   state.disc = null;
   ["D","I","S","C"].forEach(t => el(`score${t}`).textContent = "0");
+  state.staffMatches = [];
   generateRecommendation();
 }
 
@@ -1522,7 +2559,7 @@ function exportCsv() {
   const rows = [[
     "種別","保存日時","顧客名","担当者","現在の車","検討・購入車種","予算","購入時期",
     "商談メモ","DISC判定","DISC点数","DISC各回答","購入障壁","プラス動機",
-    "顧客タイプ説明","商談の順番","キラーワード","避けたい対応",
+    "顧客タイプ説明","商談の順番","キラーワード","避けたい対応","担当者候補",
     "アンケート実施時期","満足度","購入前の期待","実際に良かったこと",
     "想定とのズレ・不満","体験談"
   ]];
@@ -1560,6 +2597,9 @@ function exportCsv() {
       (r.talkOrder || []).join(" / "),
       (r.killerWords || []).join(" / "),
       r.avoidAction || "",
+      (r.recommendedStaff || []).map((item, index) =>
+        `第${index + 1}候補:${item.name}(${item.score}点) ${(item.reasons || []).join("・")}`
+      ).join(" / "),
       r.timing || "",
       r.satisfaction || "",
       r.expected || "",
@@ -1587,6 +2627,9 @@ document.addEventListener("DOMContentLoaded", () => {
   renderOptions("barrierOptions", barriers, "barrier");
   renderOptions("motiveOptions", motives, "motive");
   renderRecords();
+  renderStaffFormFields();
+  renderStaffList();
+  resetStaffForm();
   generateRecommendation();
 
   document.querySelectorAll(".tab").forEach(tab => {
@@ -1595,7 +2638,45 @@ document.addEventListener("DOMContentLoaded", () => {
       tab.classList.add("active");
       el(tab.dataset.tab).classList.add("active");
       if (tab.dataset.tab === "records") renderRecords();
+      if (tab.dataset.tab === "staff") renderStaffList();
     });
+  });
+
+  el("staffForm").addEventListener("submit", saveStaff);
+  el("resetStaffFormBtn").addEventListener("click", resetStaffForm);
+  el("matchStaffBtn").addEventListener("click", matchStaff);
+
+  el("staffList").addEventListener("click", event => {
+    const editButton = event.target.closest("[data-edit-staff]");
+    if (editButton) {
+      editStaff(editButton.dataset.editStaff);
+      return;
+    }
+
+    const deleteButton = event.target.closest("[data-delete-staff]");
+    if (deleteButton) {
+      deleteStaff(deleteButton.dataset.deleteStaff);
+    }
+  });
+
+  el("staffMatchResults").addEventListener("click", event => {
+    const selectButton = event.target.closest("[data-select-matched-staff]");
+    if (!selectButton) return;
+    el("staffName").value = selectButton.dataset.selectMatchedStaff;
+    alert(`${selectButton.dataset.selectMatchedStaff}さんを担当者欄に設定しました。`);
+  });
+
+  [
+    "currentCar",
+    "targetCar",
+    "budget",
+    "purchaseTiming",
+    "customerAgeBand",
+    "sameGenerationPreferred",
+    "dealMemo"
+  ].forEach(id => {
+    const node = el(id);
+    node.addEventListener(node.type === "checkbox" || node.tagName === "SELECT" ? "change" : "input", matchStaff);
   });
 
   el("generateBtn").addEventListener("click", generateRecommendation);
